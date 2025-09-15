@@ -4,6 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   Trophy, 
   Users, 
@@ -16,7 +20,12 @@ import {
   BookOpen,
   TrendingUp,
   MessageCircle,
-  Share2
+  Share2,
+  Shield,
+  User,
+  Settings,
+  Camera,
+  Edit
 } from "lucide-react";
 
 // Mock data for demonstration
@@ -86,8 +95,22 @@ const achievements = [
   },
 ];
 
+const avatarOptions = [
+  { id: 1, emoji: "🎯", color: "bg-red-100" },
+  { id: 2, emoji: "🚀", color: "bg-blue-100" },
+  { id: 3, emoji: "⭐", color: "bg-yellow-100" },
+  { id: 4, emoji: "🔥", color: "bg-orange-100" },
+  { id: 5, emoji: "💎", color: "bg-cyan-100" },
+  { id: 6, emoji: "🏆", color: "bg-amber-100" },
+  { id: 7, emoji: "🎨", color: "bg-purple-100" },
+  { id: 8, emoji: "🌟", color: "bg-pink-100" },
+];
+
 export function Social() {
-  const [activeTab, setActiveTab] = useState("leaderboard");
+  const [activeTab, setActiveTab] = useState("profile");
+  const [username, setUsername] = useState("StudyNinja42");
+  const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0]);
+  const [weeklyGoal, setWeeklyGoal] = useState([15]);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -127,6 +150,14 @@ export function Social() {
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
+      {/* Privacy Warning */}
+      <Alert className="mb-4 border-primary/20 bg-primary/5">
+        <Shield className="h-4 w-4 text-primary" />
+        <AlertDescription className="text-sm text-primary">
+          <strong>Privacy First:</strong> Your real identity is never shared. Only your chosen username and avatar are visible to others.
+        </AlertDescription>
+      </Alert>
+
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-bold text-on-surface">Social Hub</h1>
         <Button variant="outline" size="sm" className="gap-1.5">
@@ -136,12 +167,197 @@ export function Social() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-4">
-          <TabsTrigger value="leaderboard" className="text-xs">Rankings</TabsTrigger>
-          <TabsTrigger value="groups" className="text-xs">Groups</TabsTrigger>
-          <TabsTrigger value="friends" className="text-xs">Friends</TabsTrigger>
-          <TabsTrigger value="achievements" className="text-xs">Awards</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-5 mb-4 text-xs">
+          <TabsTrigger value="profile" className="text-[10px]">Profile</TabsTrigger>
+          <TabsTrigger value="leaderboard" className="text-[10px]">Ranks</TabsTrigger>
+          <TabsTrigger value="groups" className="text-[10px]">Groups</TabsTrigger>
+          <TabsTrigger value="friends" className="text-[10px]">Friends</TabsTrigger>
+          <TabsTrigger value="achievements" className="text-[10px]">Awards</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="profile" className="space-y-4 mt-0">
+          {/* Profile Setup Card */}
+          <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <User className="w-5 h-5 text-primary" />
+                Your Profile
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Username Section */}
+              <div className="space-y-2">
+                <Label htmlFor="username" className="text-sm font-medium text-on-surface">
+                  Username
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Enter your username"
+                    className="flex-1"
+                    maxLength={20}
+                  />
+                  <Button variant="outline" size="sm">
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-on-surface-variant">
+                  This is how others will see you (3-20 characters)
+                </p>
+              </div>
+
+              {/* Avatar Selection */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium text-on-surface">
+                  Choose Your Avatar
+                </Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {avatarOptions.map((avatar) => (
+                    <button
+                      key={avatar.id}
+                      onClick={() => setSelectedAvatar(avatar)}
+                      className={`relative p-3 rounded-lg border-2 transition-all ${
+                        selectedAvatar.id === avatar.id
+                          ? "border-primary bg-primary/10"
+                          : "border-outline-variant hover:border-outline bg-surface-variant/50"
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${avatar.color}`}>
+                        <span className="text-lg">{avatar.emoji}</span>
+                      </div>
+                      {selectedAvatar.id === avatar.id && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                          <span className="text-xs text-primary-foreground">✓</span>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <Button variant="outline" size="sm" className="w-full gap-2">
+                  <Camera className="w-4 h-4" />
+                  Upload Custom Avatar
+                </Button>
+              </div>
+
+              {/* Profile Preview */}
+              <div className="bg-surface-container p-3 rounded-lg">
+                <p className="text-xs text-on-surface-variant mb-2">Preview:</p>
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${selectedAvatar.color}`}>
+                    <span className="text-lg">{selectedAvatar.emoji}</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-on-surface">{username}</p>
+                    <p className="text-xs text-on-surface-variant">Study Level: Intermediate</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Weekly Goal Setting */}
+          <Card className="bg-tertiary-container/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Target className="w-5 h-5 text-tertiary" />
+                Weekly Study Goal
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <Label className="text-sm font-medium text-on-surface">
+                    Study Hours per Week
+                  </Label>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-tertiary">{weeklyGoal[0]}h</span>
+                    <p className="text-xs text-on-surface-variant">
+                      ~{Math.round(weeklyGoal[0] / 7 * 10) / 10}h daily
+                    </p>
+                  </div>
+                </div>
+                
+                <Slider
+                  value={weeklyGoal}
+                  onValueChange={setWeeklyGoal}
+                  max={35}
+                  min={3}
+                  step={1}
+                  className="w-full"
+                />
+                
+                <div className="flex justify-between text-xs text-on-surface-variant">
+                  <span>3h (Casual)</span>
+                  <span>15h (Balanced)</span>
+                  <span>35h (Intensive)</span>
+                </div>
+              </div>
+
+              <div className="bg-surface-container p-3 rounded-lg">
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div>
+                    <div className="text-sm font-bold text-tertiary">
+                      {Math.round((weeklyGoal[0] / 7) * 60)} min
+                    </div>
+                    <div className="text-xs text-on-surface-variant">Daily Target</div>
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-tertiary">
+                      {weeklyGoal[0] * 4} h
+                    </div>
+                    <div className="text-xs text-on-surface-variant">Monthly Goal</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button className="flex-1" variant="outline">
+                  Cancel
+                </Button>
+                <Button className="flex-1">
+                  Save Goal
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Privacy & Settings */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Settings className="w-5 h-5 text-on-surface" />
+                Privacy & Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between items-center py-2">
+                <div>
+                  <p className="text-sm font-medium text-on-surface">Profile Visibility</p>
+                  <p className="text-xs text-on-surface-variant">Who can see your profile</p>
+                </div>
+                <Badge variant="secondary" className="text-xs">Friends Only</Badge>
+              </div>
+              
+              <div className="flex justify-between items-center py-2">
+                <div>
+                  <p className="text-sm font-medium text-on-surface">Study Stats</p>
+                  <p className="text-xs text-on-surface-variant">Share progress with friends</p>
+                </div>
+                <Badge className="bg-success text-success-foreground text-xs">Enabled</Badge>
+              </div>
+              
+              <div className="flex justify-between items-center py-2">
+                <div>
+                  <p className="text-sm font-medium text-on-surface">Leaderboard</p>
+                  <p className="text-xs text-on-surface-variant">Appear in rankings</p>
+                </div>
+                <Badge className="bg-success text-success-foreground text-xs">Enabled</Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="leaderboard" className="space-y-3 mt-0">
           <Card className="bg-gradient-to-r from-primary/10 to-secondary/10">
