@@ -81,14 +81,37 @@ export function Home() {
         </p>
       </div>
 
-      {/* Progress Ring */}
-      <div className="flex justify-center">
-        <ProgressRing 
-          progress={todayProgress}
-          size={120}
-          showCelebration={showCelebration}
-          className="breathing"
-        />
+      {/* Progress Ring with Countdown Overlay */}
+      <div className="flex justify-center relative">
+        <div className="relative">
+          <ProgressRing 
+            progress={todayProgress}
+            size={120}
+            showCelebration={showCelebration}
+            className="breathing"
+          />
+          
+          {/* Countdown Bar Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="relative w-24 h-1 bg-surface-variant/30 rounded-full overflow-hidden">
+              <div 
+                className="absolute left-0 top-0 h-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000 rounded-full"
+                style={{ 
+                  width: `${Math.max(10, 100 - ((examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24) / 365 * 100))}%` 
+                }}
+              >
+                <div className="absolute right-0 top-0 w-1 h-full bg-white/80 rounded-full animate-pulse" />
+              </div>
+            </div>
+          </div>
+          
+          {/* Exam Info Badge */}
+          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+            <div className="bg-primary/90 text-primary-foreground px-2 py-1 rounded-full text-xs font-medium shadow-lg">
+              {Math.ceil((examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Stats Row */}
