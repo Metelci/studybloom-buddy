@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navigation } from "@/components/Navigation";
 import { Home } from "@/components/Home";
 import { Progress } from "@/components/Progress";
+import { Social } from "@/components/Social";
 import { Settings } from "@/components/Settings";
 
 const queryClient = new QueryClient();
@@ -27,12 +28,7 @@ const App = () => {
       case "progress":
         return <Progress />;
       case "social":
-        return (
-          <div className="p-6 pb-20 max-w-md mx-auto">
-            <h1 className="text-2xl font-bold text-on-surface mb-4">Social</h1>
-            <p className="text-on-surface-variant">Social features coming soon...</p>
-          </div>
-        );
+        return <Social />;
       case "settings":
         return <Settings />;
       default:
