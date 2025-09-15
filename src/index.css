@@ -8,35 +8,85 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Material Design 3 - StudyPlan Theme */
+    --background: 0 0% 98%;
+    --foreground: 215 25% 13%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card surfaces with tonal elevation */
+    --card: 197 100% 95%;
+    --card-foreground: 215 25% 13%;
+    --card-elevated: 197 100% 93%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Primary - Light Blue Palette */
+    --primary: 199 84% 75%; /* #81D4FA */
+    --primary-foreground: 215 25% 13%;
+    --primary-container: 199 100% 87%; /* #B3E5FC */
+    --primary-container-foreground: 215 25% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Secondary - Light Green Palette */
+    --secondary: 122 39% 70%; /* #A5D6A7 */
+    --secondary-foreground: 215 25% 13%;
+    --secondary-container: 122 46% 80%; /* #C8E6C9 */
+    --secondary-container-foreground: 215 25% 13%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Tertiary - Soft Coral for achievements */
+    --tertiary: 14 100% 77%; /* #FFAB91 */
+    --tertiary-foreground: 215 25% 13%;
+    --tertiary-container: 14 100% 85%;
+    --tertiary-container-foreground: 215 25% 13%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Surface variants */
+    --surface: 0 0% 98%;
+    --surface-variant: 220 14% 96%;
+    --surface-container: 220 14% 96%;
+    --surface-container-high: 220 14% 93%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Semantic colors */
+    --success: 122 39% 70%;
+    --success-container: 122 46% 80%;
+    --warning: 45 100% 75%;
+    --warning-container: 45 100% 85%;
+    --error: 0 68% 70%;
+    --error-container: 0 68% 85%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Text hierarchy */
+    --on-surface: 215 25% 13%;
+    --on-surface-variant: 215 16% 47%;
+    --outline: 220 13% 73%;
+    --outline-variant: 220 13% 87%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Legacy mappings for shadcn compatibility */
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 199 100% 87%;
+    --accent-foreground: 215 25% 13%;
+    --destructive: 0 68% 70%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 87%;
+    --input: 220 13% 87%;
+    --ring: 199 84% 75%;
 
-    --radius: 0.5rem;
+    /* Design tokens */
+    --radius: 0.75rem; /* 12dp in MD3 */
+    --radius-sm: 0.5rem; /* 8dp */
+    --radius-lg: 1.5rem; /* 24dp for FAB */
+
+    /* Elevation shadows */
+    --shadow-sm: 0 1px 3px hsl(215 25% 13% / 0.12);
+    --shadow-md: 0 4px 6px hsl(215 25% 13% / 0.15);
+    --shadow-lg: 0 10px 15px hsl(215 25% 13% / 0.1);
+
+    /* Animation tokens */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-standard: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-emphasized: 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+
+    /* Gamification colors */
+    --streak-fire: 14 100% 77%;
+    --achievement-bronze: 30 67% 70%;
+    --achievement-silver: 0 0% 75%;
+    --achievement-gold: 45 100% 70%;
+    --achievement-platinum: 263 67% 80%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +106,71 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Material Design 3 - Dark Theme */
+    --background: 215 25% 13%;
+    --foreground: 220 14% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    /* Card surfaces with tonal elevation */
+    --card: 215 25% 16%;
+    --card-foreground: 220 14% 96%;
+    --card-elevated: 215 25% 18%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* Primary - Light Blue Palette (Dark Mode) */
+    --primary: 199 84% 82%; /* Lighter in dark mode */
+    --primary-foreground: 215 25% 13%;
+    --primary-container: 199 84% 25%; /* Darker container */
+    --primary-container-foreground: 199 100% 90%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Light Green Palette (Dark Mode) */
+    --secondary: 122 39% 75%;
+    --secondary-foreground: 215 25% 13%;
+    --secondary-container: 122 39% 25%;
+    --secondary-container-foreground: 122 46% 85%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Tertiary - Soft Coral (Dark Mode) */
+    --tertiary: 14 100% 80%;
+    --tertiary-foreground: 215 25% 13%;
+    --tertiary-container: 14 100% 30%;
+    --tertiary-container-foreground: 14 100% 90%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Surface variants */
+    --surface: 215 25% 13%;
+    --surface-variant: 215 25% 18%;
+    --surface-container: 215 25% 16%;
+    --surface-container-high: 215 25% 20%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Semantic colors */
+    --success: 122 39% 75%;
+    --success-container: 122 39% 25%;
+    --warning: 45 100% 80%;
+    --warning-container: 45 100% 30%;
+    --error: 0 68% 75%;
+    --error-container: 0 68% 30%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Text hierarchy */
+    --on-surface: 220 14% 96%;
+    --on-surface-variant: 220 14% 70%;
+    --outline: 220 13% 40%;
+    --outline-variant: 220 13% 25%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Legacy mappings for shadcn compatibility */
+    --muted: 215 25% 18%;
+    --muted-foreground: 220 14% 70%;
+    --accent: 199 84% 25%;
+    --accent-foreground: 199 100% 90%;
+    --destructive: 0 68% 75%;
+    --destructive-foreground: 220 14% 96%;
+    --border: 220 13% 25%;
+    --input: 220 13% 25%;
+    --ring: 199 84% 82%;
+
+    /* Gamification colors (Dark Mode) */
+    --streak-fire: 14 100% 80%;
+    --achievement-bronze: 30 67% 75%;
+    --achievement-silver: 0 0% 80%;
+    --achievement-gold: 45 100% 75%;
+    --achievement-platinum: 263 67% 85%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +189,91 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Roboto Flex', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Material Design 3 Card Variants */
+  .card-elevated {
+    @apply bg-card-elevated shadow-md;
+  }
+  
+  .card-container {
+    @apply bg-primary-container text-primary-container-foreground;
+  }
+  
+  .card-secondary-container {
+    @apply bg-secondary-container text-secondary-container-foreground;
+  }
+
+  /* Gamification Elements */
+  .streak-fire {
+    @apply text-[hsl(var(--streak-fire))];
+  }
+  
+  .achievement-bronze {
+    @apply bg-[hsl(var(--achievement-bronze))] text-white;
+  }
+  
+  .achievement-silver {
+    @apply bg-[hsl(var(--achievement-silver))] text-white;
+  }
+  
+  .achievement-gold {
+    @apply bg-[hsl(var(--achievement-gold))] text-white;
+  }
+  
+  .achievement-platinum {
+    @apply bg-[hsl(var(--achievement-platinum))] text-white;
+  }
+
+  /* Progress Ring */
+  .progress-ring {
+    transform: rotate(-90deg);
+    transition: stroke-dasharray var(--transition-emphasized);
+  }
+
+  /* Breathing Animation */
+  .breathing {
+    animation: breathing 2s ease-in-out infinite;
+  }
+  
+  @keyframes breathing {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.005); }
+  }
+
+  /* Celebration Effects */
+  .celebration-bounce {
+    animation: celebration-bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  @keyframes celebration-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  /* Swipe Gesture Feedback */
+  .swipe-complete {
+    background: linear-gradient(90deg, 
+      hsl(var(--secondary-container)) 0%, 
+      hsl(var(--secondary)) 100%);
+    transition: all var(--transition-emphasized);
+  }
+
+  /* AI Glow Effect */
+  .ai-glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.1);
+  }
+
+  /* Tab Navigation */
+  .tab-active {
+    @apply bg-primary-container text-primary-container-foreground;
+  }
+  
+  .tab-inactive {
+    @apply bg-transparent text-on-surface-variant hover:bg-surface-container;
   }
 }
