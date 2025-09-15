@@ -12,16 +12,16 @@ export function StreakCounter({ streakDays, className }: StreakCounterProps) {
   
   return (
     <div className={cn(
-      "flex items-center gap-3 p-4 rounded-xl bg-tertiary-container",
+      "flex items-center gap-2 p-3 rounded-xl bg-tertiary-container",
       isOnFire && "breathing",
       className
     )}>
       <div className={cn(
-        "p-3 rounded-full bg-tertiary",
+        "p-2 rounded-full bg-tertiary",
         isOnFire && "animate-pulse"
       )}>
         <Flame 
-          size={24} 
+          size={20} 
           className={cn(
             "text-white",
             isOnFire && "streak-fire"
@@ -31,20 +31,20 @@ export function StreakCounter({ streakDays, className }: StreakCounterProps) {
       
       <div className="flex-1">
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-tertiary-container-foreground">
+          <span className="text-xl font-bold text-tertiary-container-foreground">
             {streakDays}
           </span>
-          <span className="text-sm text-tertiary-container-foreground/80">
+          <span className="text-xs text-tertiary-container-foreground/80">
             day{streakDays !== 1 ? 's' : ''} streak
           </span>
           {multiplier > 1 && (
-            <span className="px-2 py-1 bg-tertiary text-white text-xs font-bold rounded-full">
+            <span className="px-1.5 py-0.5 bg-tertiary text-white text-xs font-bold rounded-full">
               {multiplier}x
             </span>
           )}
         </div>
         
-        <p className="text-sm text-tertiary-container-foreground/70 mt-1">
+        <p className="text-xs text-tertiary-container-foreground/70">
           {isOnFire 
             ? "You're on fire! 🔥" 
             : streakDays > 0 

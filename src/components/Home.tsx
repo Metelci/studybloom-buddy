@@ -70,13 +70,13 @@ export function Home() {
   };
 
   return (
-    <div className="pb-20 px-4 pt-6 max-w-md mx-auto space-y-6">
+    <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-on-surface mb-2">
+      <div className="text-center mb-3">
+        <h1 className="text-xl font-bold text-on-surface mb-1">
           Good morning! 👋
         </h1>
-        <p className="text-on-surface-variant">
+        <p className="text-sm text-on-surface-variant">
           Ready to ace your YDS exam?
         </p>
       </div>
@@ -85,28 +85,28 @@ export function Home() {
       <div className="flex justify-center">
         <ProgressRing 
           progress={todayProgress}
-          size={140}
+          size={120}
           showCelebration={showCelebration}
           className="breathing"
         />
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-2 gap-4">
-        <Card className="p-4 bg-secondary-container text-center">
-          <div className="text-2xl font-bold text-secondary-container-foreground">
+      <div className="grid grid-cols-2 gap-3">
+        <Card className="p-3 bg-secondary-container text-center">
+          <div className="text-xl font-bold text-secondary-container-foreground">
             {todayScore}
           </div>
-          <div className="text-sm text-secondary-container-foreground/80">
+          <div className="text-xs text-secondary-container-foreground/80">
             Points Today
           </div>
         </Card>
         
-        <Card className="p-4 bg-tertiary-container text-center">
-          <div className="text-2xl font-bold text-tertiary-container-foreground">
+        <Card className="p-3 bg-tertiary-container text-center">
+          <div className="text-xl font-bold text-tertiary-container-foreground">
             {completedTasks.length}/{tasks.length}
           </div>
-          <div className="text-sm text-tertiary-container-foreground/80">
+          <div className="text-xs text-tertiary-container-foreground/80">
             Tasks Done
           </div>
         </Card>
@@ -119,22 +119,22 @@ export function Home() {
       <ExamCountdown examDate={examDate} />
 
       {/* AI Smart Suggestion */}
-      <Card className="p-4 bg-card-elevated ai-glow">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 bg-primary rounded-full">
-            <Brain size={20} className="text-primary-foreground" />
+      <Card className="p-3 bg-card-elevated ai-glow">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="p-1.5 bg-primary rounded-full">
+            <Brain size={16} className="text-primary-foreground" />
           </div>
           <div>
-            <h3 className="font-semibold text-card-foreground">
+            <h3 className="font-medium text-sm text-card-foreground">
               Smart Suggestion
             </h3>
-            <p className="text-sm text-card-foreground/80">
+            <p className="text-xs text-card-foreground/80">
               AI-powered recommendation
             </p>
           </div>
         </div>
         
-        <p className="text-sm text-card-foreground/90 mb-3">
+        <p className="text-xs text-card-foreground/90 mb-2">
           Based on your progress, focus on <strong>reading comprehension</strong> today. 
           You're 85% ready for grammar but could improve reading speed by 15%.
         </p>
@@ -142,23 +142,23 @@ export function Home() {
         <Button 
           variant="outline" 
           size="sm" 
-          className="w-full border-primary text-primary hover:bg-primary-container"
+          className="w-full text-xs border-primary text-primary hover:bg-primary-container"
         >
-          <Sparkles size={16} className="mr-2" />
+          <Sparkles size={14} className="mr-1" />
           Try Recommended Task
         </Button>
       </Card>
 
       {/* Today's Tasks */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-on-surface">
+          <h2 className="text-lg font-semibold text-on-surface">
             Today's Tasks
           </h2>
-          <TrendingUp size={20} className="text-primary" />
+          <TrendingUp size={18} className="text-primary" />
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-2">
           {tasks.slice(0, 3).map(task => (
             <TaskCard
               key={task.id}
@@ -180,13 +180,13 @@ export function Home() {
 
       {/* Motivational Message */}
       {showCelebration && (
-        <Card className="p-4 bg-success-container border-2 border-success celebration-bounce">
+        <Card className="p-3 bg-success-container border-2 border-success celebration-bounce">
           <div className="text-center">
-            <div className="text-2xl mb-2">🎉</div>
-            <h3 className="font-semibold text-success-container-foreground mb-1">
+            <div className="text-xl mb-1">🎉</div>
+            <h3 className="font-medium text-sm text-success-container-foreground mb-1">
               Great job!
             </h3>
-            <p className="text-sm text-success-container-foreground/80">
+            <p className="text-xs text-success-container-foreground/80">
               You've completed 100% of today's goals!
             </p>
           </div>

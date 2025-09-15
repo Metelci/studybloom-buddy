@@ -75,7 +75,7 @@ export function ProgressRing({
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
           <div className={cn(
-            "text-2xl font-bold text-on-surface transition-colors duration-standard",
+            "text-xl font-bold text-on-surface transition-colors duration-standard",
             progress === 100 && "text-primary"
           )}>
             {Math.round(animatedProgress)}%

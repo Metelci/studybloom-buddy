@@ -52,7 +52,7 @@ export function TaskCard({
 
   return (
     <Card className={cn(
-      "p-4 border-l-4 transition-all duration-standard hover:shadow-md cursor-pointer",
+      "p-3 border-l-4 transition-all duration-standard hover:shadow-md cursor-pointer",
       skillColors[skillType],
       completed && "opacity-60 bg-success-container",
       isCompleting && "swipe-complete",
@@ -60,26 +60,26 @@ export function TaskCard({
     )}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-medium text-on-surface-variant bg-surface-container px-2 py-1 rounded-full">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-medium text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded-full">
               {skillLabels[skillType]}
             </span>
             <div className="flex items-center gap-1 text-xs text-on-surface-variant">
-              <Clock size={12} />
+              <Clock size={10} />
               {estimatedTime}min
             </div>
           </div>
           
           <h3 className={cn(
-            "font-medium text-on-surface mb-2",
+            "font-medium text-sm text-on-surface mb-1",
             completed && "line-through text-on-surface-variant"
           )}>
             {title}
           </h3>
           
-          <div className="flex items-center gap-2">
-            <Star size={14} className="text-tertiary" />
-            <span className="text-sm font-medium text-tertiary">
+          <div className="flex items-center gap-1">
+            <Star size={12} className="text-tertiary" />
+            <span className="text-xs font-medium text-tertiary">
               {points} points
             </span>
           </div>
@@ -89,7 +89,7 @@ export function TaskCard({
           onClick={handleComplete}
           disabled={completed}
           className={cn(
-            "w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-standard",
+            "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-standard",
             completed 
               ? "bg-success border-success text-white" 
               : "border-outline hover:border-primary hover:bg-primary-container",
@@ -97,7 +97,7 @@ export function TaskCard({
           )}
         >
           {(completed || isCompleting) && (
-            <Check size={16} className="text-white" />
+            <Check size={14} className="text-white" />
           )}
         </button>
       </div>
