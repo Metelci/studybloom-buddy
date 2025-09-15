@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navigation } from "@/components/Navigation";
 import { Home } from "@/components/Home";
+import { Settings } from "@/components/Settings";
 
 const queryClient = new QueryClient();
 
@@ -37,12 +38,7 @@ const App = () => {
           </div>
         );
       case "settings":
-        return (
-          <div className="p-6 pb-20 max-w-md mx-auto">
-            <h1 className="text-2xl font-bold text-on-surface mb-4">Settings</h1>
-            <p className="text-on-surface-variant">Settings panel coming soon...</p>
-          </div>
-        );
+        return <Settings />;
       default:
         return <Home />;
     }
