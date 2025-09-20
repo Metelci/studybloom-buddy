@@ -144,7 +144,7 @@ export function WeeklyStudyPlan({ onNavigateToTasks }: WeeklyStudyPlanProps) {
   const upcomingDays = plan.dailyPlans.slice(0, 3);
   
   return (
-    <Card className="bg-card border-outline">
+    <Card className="bg-plan-container border-outline">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -152,10 +152,10 @@ export function WeeklyStudyPlan({ onNavigateToTasks }: WeeklyStudyPlanProps) {
               <Calendar size={14} className="text-primary-foreground" />
             </div>
             <div>
-              <CardTitle className="text-base text-card-foreground">
+              <CardTitle className="text-base text-plan-container-foreground">
                 Weekly Study Plan
               </CardTitle>
-              <p className="text-xs text-card-foreground/70">
+              <p className="text-xs text-plan-container-foreground/70">
                 {plan.theme}
               </p>
             </div>
@@ -170,7 +170,7 @@ export function WeeklyStudyPlan({ onNavigateToTasks }: WeeklyStudyPlanProps) {
         {/* Overall Progress */}
         <div className="space-y-1">
           <Progress value={plan.overallProgress} className="h-2" />
-          <p className="text-xs text-card-foreground/70">
+          <p className="text-xs text-plan-container-foreground/70">
             Week Progress • {plan.dailyPlans.filter(dp => dp.completed).length}/{plan.dailyPlans.length} days
           </p>
         </div>
@@ -227,7 +227,7 @@ export function WeeklyStudyPlan({ onNavigateToTasks }: WeeklyStudyPlanProps) {
 
         {/* Week Overview */}
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-card-foreground">This Week</h4>
+          <h4 className="text-sm font-medium text-plan-container-foreground">This Week</h4>
           <div className="grid grid-cols-7 gap-1">
             {plan.dailyPlans.map((dayPlan) => {
               const dayName = getDayName(dayPlan.date);

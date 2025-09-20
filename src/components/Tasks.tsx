@@ -378,50 +378,50 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
 
         <TabsContent value="plan" className="space-y-4 mt-0">
           {/* Current Week's Detailed Plan */}
-          <Card>
+          <Card className="bg-plan-container">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
+              <CardTitle className="text-base flex items-center gap-2 text-plan-container-foreground">
                 <Calendar className="w-4 h-4 text-primary" />
                 This Week's Study Plan
               </CardTitle>
-              <p className="text-xs text-on-surface-variant mt-1">Reading Comprehension Focus</p>
+              <p className="text-xs text-plan-container-foreground/70 mt-1">Reading Comprehension Focus</p>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Week Progress */}
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-on-surface">Week Progress</span>
-                  <span className="text-on-surface-variant">65%</span>
+                  <span className="text-plan-container-foreground">Week Progress</span>
+                  <span className="text-plan-container-foreground/70">65%</span>
                 </div>
                 <Progress value={65} className="h-2" />
               </div>
 
               {/* Daily Schedule */}
               <div className="space-y-3">
-                <h4 className="text-sm font-medium text-on-surface">Daily Schedule</h4>
+                <h4 className="text-sm font-medium text-plan-container-foreground">Daily Schedule</h4>
                 
                 {/* Monday */}
                 <div className="border rounded-lg p-3 bg-success/5 border-success/20">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-on-surface">Monday, Dec 16</h5>
+                      <h5 className="text-sm font-medium text-plan-container-foreground">Monday, Dec 16</h5>
                       <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
                     </div>
-                    <span className="text-xs text-on-surface-variant">100%</span>
+                    <span className="text-xs text-plan-container-foreground/70">100%</span>
                   </div>
-                  <p className="text-xs text-on-surface-variant mb-2">Foundation building with vocabulary</p>
+                  <p className="text-xs text-plan-container-foreground/70 mb-2">Foundation building with vocabulary</p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs">
                       <CheckCircle2 className="w-3 h-3 text-success" />
                       <BookOpen className="w-3 h-3 text-blue-500" />
-                      <span className="flex-1 line-through text-on-surface-variant">Advanced Vocabulary Set A</span>
-                      <span className="text-on-surface-variant">09:00-09:30</span>
+                      <span className="flex-1 line-through text-plan-container-foreground/60">Advanced Vocabulary Set A</span>
+                      <span className="text-plan-container-foreground/70">09:00-09:30</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs">
                       <CheckCircle2 className="w-3 h-3 text-success" />
                       <PenTool className="w-3 h-3 text-green-500" />
-                      <span className="flex-1 line-through text-on-surface-variant">Grammar Review: Conditionals</span>
-                      <span className="text-on-surface-variant">14:00-14:45</span>
+                      <span className="flex-1 line-through text-plan-container-foreground/60">Grammar Review: Conditionals</span>
+                      <span className="text-plan-container-foreground/70">14:00-14:45</span>
                     </div>
                   </div>
                 </div>
@@ -430,18 +430,18 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 <div className="border rounded-lg p-3 bg-success/5 border-success/20">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-on-surface">Tuesday, Dec 17</h5>
+                      <h5 className="text-sm font-medium text-plan-container-foreground">Tuesday, Dec 17</h5>
                       <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
                     </div>
-                    <span className="text-xs text-on-surface-variant">100%</span>
+                    <span className="text-xs text-plan-container-foreground/70">100%</span>
                   </div>
-                  <p className="text-xs text-on-surface-variant mb-2">Reading speed improvement</p>
+                  <p className="text-xs text-plan-container-foreground/70 mb-2">Reading speed improvement</p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs">
                       <CheckCircle2 className="w-3 h-3 text-success" />
                       <Brain className="w-3 h-3 text-purple-500" />
-                      <span className="flex-1 line-through text-on-surface-variant">Speed Reading Practice</span>
-                      <span className="text-on-surface-variant">10:00-11:00</span>
+                      <span className="flex-1 line-through text-plan-container-foreground/60">Speed Reading Practice</span>
+                      <span className="text-plan-container-foreground/70">10:00-11:00</span>
                     </div>
                   </div>
                 </div>
@@ -450,24 +450,24 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 <div className="border rounded-lg p-3 bg-primary-container/20 border-primary/30">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-on-surface">Wednesday, Dec 18 (Today)</h5>
+                      <h5 className="text-sm font-medium text-plan-container-foreground">Wednesday, Dec 18 (Today)</h5>
                       <Badge variant="outline" className="text-xs">In Progress</Badge>
                     </div>
-                    <span className="text-xs text-on-surface-variant">70%</span>
+                    <span className="text-xs text-plan-container-foreground/70">70%</span>
                   </div>
-                  <p className="text-xs text-on-surface-variant mb-2">Comprehensive practice day</p>
+                  <p className="text-xs text-plan-container-foreground/70 mb-2">Comprehensive practice day</p>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-xs">
                       <CheckCircle2 className="w-3 h-3 text-success" />
                       <Brain className="w-3 h-3 text-purple-500" />
-                      <span className="flex-1 line-through text-on-surface-variant">Reading Comprehension</span>
-                      <span className="text-on-surface-variant">09:30-10:30</span>
+                      <span className="flex-1 line-through text-plan-container-foreground/60">Reading Comprehension</span>
+                      <span className="text-plan-container-foreground/70">09:30-10:30</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs">
                       <Circle className="w-3 h-3 text-on-surface-variant" />
                       <Headphones className="w-3 h-3 text-orange-500" />
-                      <span className="flex-1 text-on-surface">Listening Practice</span>
-                      <span className="text-on-surface-variant">15:00-15:40</span>
+                      <span className="flex-1 text-plan-container-foreground">Listening Practice</span>
+                      <span className="text-plan-container-foreground/70">15:00-15:40</span>
                     </div>
                   </div>
                 </div>
@@ -475,10 +475,10 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 {/* Thursday - Friday - Weekend Preview */}
                 <div className="border rounded-lg p-3 bg-surface-variant/20">
                   <div className="flex items-center justify-between mb-2">
-                    <h5 className="text-sm font-medium text-on-surface">Upcoming Days</h5>
+                    <h5 className="text-sm font-medium text-plan-container-foreground">Upcoming Days</h5>
                     <Badge variant="outline" className="text-xs">Planned</Badge>
                   </div>
-                  <div className="space-y-1 text-xs text-on-surface-variant">
+                  <div className="space-y-1 text-xs text-plan-container-foreground/70">
                     <div>Thu: Grammar deep dive + Vocabulary expansion</div>
                     <div>Fri: Mixed practice + Mock test preparation</div>
                     <div>Weekend: Review week + Prep next week's plan</div>

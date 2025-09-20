@@ -88,6 +88,10 @@ All colors MUST be HSL.
     --achievement-gold: 45 100% 70%;
     --achievement-platinum: 263 67% 80%;
 
+    /* Plan colors */
+    --plan-container: 60 40% 92%;
+    --plan-container-foreground: 215 25% 13%;
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -170,6 +174,10 @@ All colors MUST be HSL.
     --achievement-silver: 0 0% 80%;
     --achievement-gold: 45 100% 75%;
     --achievement-platinum: 263 67% 85%;
+
+    /* Plan colors (Dark Mode) */
+    --plan-container: 60 20% 25%;
+    --plan-container-foreground: 60 40% 90%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;

@@ -98,6 +98,12 @@ export default {
           platinum: "hsl(var(--achievement-platinum))",
         },
         
+        // Plan colors
+        plan: {
+          container: "hsl(var(--plan-container))",
+          "container-foreground": "hsl(var(--plan-container-foreground))",
+        },
+        
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
