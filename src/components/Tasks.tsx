@@ -185,9 +185,10 @@ export function Tasks() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsList className="grid w-full grid-cols-4 mb-4">
           <TabsTrigger value="daily" className="text-xs">Daily</TabsTrigger>
           <TabsTrigger value="weekly" className="text-xs">Weekly</TabsTrigger>
+          <TabsTrigger value="plan" className="text-xs">Plan</TabsTrigger>
           <TabsTrigger value="custom" className="text-xs">Custom</TabsTrigger>
         </TabsList>
 
@@ -369,6 +370,69 @@ export function Tasks() {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="plan" className="space-y-4 mt-0">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-primary" />
+                Study Plan Manager
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-20 flex-col gap-2">
+                  <Calendar className="w-5 h-5 text-primary" />
+                  <span className="text-xs">Create New<br/>Weekly Plan</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex-col gap-2">
+                  <Target className="w-5 h-5 text-secondary" />
+                  <span className="text-xs">Auto-Generate<br/>Smart Plan</span>
+                </Button>
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-on-surface">Quick Actions</h4>
+                <Button variant="ghost" className="w-full justify-start gap-3">
+                  <BookOpen className="w-4 h-4 text-blue-500" />
+                  <span>Modify This Week's Plan</span>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start gap-3">
+                  <TrendingUp className="w-4 h-4 text-green-500" />
+                  <span>View Planning Analytics</span>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start gap-3">
+                  <Clock className="w-4 h-4 text-orange-500" />
+                  <span>Adjust Daily Time Slots</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Planning Templates</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Button variant="ghost" className="w-full justify-between">
+                <span>Intensive Reading Week</span>
+                <Badge variant="secondary">7 days</Badge>
+              </Button>
+              <Button variant="ghost" className="w-full justify-between">
+                <span>Balanced Skills Focus</span>
+                <Badge variant="secondary">7 days</Badge>
+              </Button>
+              <Button variant="ghost" className="w-full justify-between">
+                <span>Grammar Mastery Sprint</span>
+                <Badge variant="secondary">5 days</Badge>
+              </Button>
+              <Button variant="ghost" className="w-full justify-between">
+                <span>Vocabulary Expansion</span>
+                <Badge variant="secondary">10 days</Badge>
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="custom" className="space-y-4 mt-0">

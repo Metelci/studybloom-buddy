@@ -4,6 +4,7 @@ import { ProgressRing } from "./ProgressRing";
 import { StreakCounter } from "./StreakCounter";
 import { TaskCard } from "./TaskCard";
 import { ExamCountdown } from "./ExamCountdown";
+import { WeeklyStudyPlan } from "./WeeklyStudyPlan";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -145,6 +146,9 @@ export function Home() {
 
       {/* Streak Counter */}
       <StreakCounter streakDays={streakDays} />
+
+      {/* Weekly Study Plan */}
+      <WeeklyStudyPlan />
 
       {/* Exam Countdown */}
       <ExamCountdown examDate={examDate} />
