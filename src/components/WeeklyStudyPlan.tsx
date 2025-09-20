@@ -129,7 +129,11 @@ const isToday = (dateStr: string) => {
   return dateStr === today;
 };
 
-export function WeeklyStudyPlan() {
+interface WeeklyStudyPlanProps {
+  onNavigateToTasks?: (subTab?: string) => void;
+}
+
+export function WeeklyStudyPlan({ onNavigateToTasks }: WeeklyStudyPlanProps) {
   const [plan] = useState<WeeklyStudyPlanType>(mockWeeklyPlan);
   
   // Get today's plan
@@ -250,10 +254,19 @@ export function WeeklyStudyPlan() {
 
         {/* Action Buttons */}
         <div className="flex gap-2 pt-1">
-          <Button variant="outline" size="sm" className="flex-1 text-xs">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1 text-xs"
+            onClick={() => onNavigateToTasks?.("plan")}
+          >
             View Full Week
           </Button>
-          <Button size="sm" className="flex-1 text-xs">
+          <Button 
+            size="sm" 
+            className="flex-1 text-xs"
+            onClick={() => onNavigateToTasks?.("plan")}
+          >
             <ChevronRight size={12} className="ml-1" />
             Modify Plan
           </Button>

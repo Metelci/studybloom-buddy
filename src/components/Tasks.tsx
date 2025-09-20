@@ -145,8 +145,12 @@ const weeklyGoals = [
   }
 ];
 
-export function Tasks() {
-  const [activeTab, setActiveTab] = useState("daily");
+interface TasksProps {
+  initialTab?: string;
+}
+
+export function Tasks({ initialTab = "daily" }: TasksProps) {
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const getDifficultyColor = (difficulty: string) => {
@@ -373,63 +377,137 @@ export function Tasks() {
         </TabsContent>
 
         <TabsContent value="plan" className="space-y-4 mt-0">
+          {/* Current Week's Detailed Plan */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                Study Plan Manager
+                This Week's Study Plan
               </CardTitle>
+              <p className="text-xs text-on-surface-variant mt-1">Reading Comprehension Focus</p>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-20 flex-col gap-2">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <span className="text-xs">Create New<br/>Weekly Plan</span>
-                </Button>
-                <Button variant="outline" className="h-20 flex-col gap-2">
-                  <Target className="w-5 h-5 text-secondary" />
-                  <span className="text-xs">Auto-Generate<br/>Smart Plan</span>
-                </Button>
-              </div>
-              
+              {/* Week Progress */}
               <div className="space-y-2">
-                <h4 className="text-sm font-medium text-on-surface">Quick Actions</h4>
-                <Button variant="ghost" className="w-full justify-start gap-3">
-                  <BookOpen className="w-4 h-4 text-blue-500" />
-                  <span>Modify This Week's Plan</span>
-                </Button>
-                <Button variant="ghost" className="w-full justify-start gap-3">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span>View Planning Analytics</span>
-                </Button>
-                <Button variant="ghost" className="w-full justify-start gap-3">
-                  <Clock className="w-4 h-4 text-orange-500" />
-                  <span>Adjust Daily Time Slots</span>
-                </Button>
+                <div className="flex justify-between text-sm">
+                  <span className="text-on-surface">Week Progress</span>
+                  <span className="text-on-surface-variant">65%</span>
+                </div>
+                <Progress value={65} className="h-2" />
+              </div>
+
+              {/* Daily Schedule */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-on-surface">Daily Schedule</h4>
+                
+                {/* Monday */}
+                <div className="border rounded-lg p-3 bg-success/5 border-success/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <h5 className="text-sm font-medium text-on-surface">Monday, Dec 16</h5>
+                      <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
+                    </div>
+                    <span className="text-xs text-on-surface-variant">100%</span>
+                  </div>
+                  <p className="text-xs text-on-surface-variant mb-2">Foundation building with vocabulary</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-xs">
+                      <CheckCircle2 className="w-3 h-3 text-success" />
+                      <BookOpen className="w-3 h-3 text-blue-500" />
+                      <span className="flex-1 line-through text-on-surface-variant">Advanced Vocabulary Set A</span>
+                      <span className="text-on-surface-variant">09:00-09:30</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs">
+                      <CheckCircle2 className="w-3 h-3 text-success" />
+                      <PenTool className="w-3 h-3 text-green-500" />
+                      <span className="flex-1 line-through text-on-surface-variant">Grammar Review: Conditionals</span>
+                      <span className="text-on-surface-variant">14:00-14:45</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tuesday */}
+                <div className="border rounded-lg p-3 bg-success/5 border-success/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <h5 className="text-sm font-medium text-on-surface">Tuesday, Dec 17</h5>
+                      <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
+                    </div>
+                    <span className="text-xs text-on-surface-variant">100%</span>
+                  </div>
+                  <p className="text-xs text-on-surface-variant mb-2">Reading speed improvement</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-xs">
+                      <CheckCircle2 className="w-3 h-3 text-success" />
+                      <Brain className="w-3 h-3 text-purple-500" />
+                      <span className="flex-1 line-through text-on-surface-variant">Speed Reading Practice</span>
+                      <span className="text-on-surface-variant">10:00-11:00</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Wednesday - Today */}
+                <div className="border rounded-lg p-3 bg-primary-container/20 border-primary/30">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <h5 className="text-sm font-medium text-on-surface">Wednesday, Dec 18 (Today)</h5>
+                      <Badge variant="outline" className="text-xs">In Progress</Badge>
+                    </div>
+                    <span className="text-xs text-on-surface-variant">70%</span>
+                  </div>
+                  <p className="text-xs text-on-surface-variant mb-2">Comprehensive practice day</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-xs">
+                      <CheckCircle2 className="w-3 h-3 text-success" />
+                      <Brain className="w-3 h-3 text-purple-500" />
+                      <span className="flex-1 line-through text-on-surface-variant">Reading Comprehension</span>
+                      <span className="text-on-surface-variant">09:30-10:30</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs">
+                      <Circle className="w-3 h-3 text-on-surface-variant" />
+                      <Headphones className="w-3 h-3 text-orange-500" />
+                      <span className="flex-1 text-on-surface">Listening Practice</span>
+                      <span className="text-on-surface-variant">15:00-15:40</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Thursday - Friday - Weekend Preview */}
+                <div className="border rounded-lg p-3 bg-surface-variant/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="text-sm font-medium text-on-surface">Upcoming Days</h5>
+                    <Badge variant="outline" className="text-xs">Planned</Badge>
+                  </div>
+                  <div className="space-y-1 text-xs text-on-surface-variant">
+                    <div>Thu: Grammar deep dive + Vocabulary expansion</div>
+                    <div>Fri: Mixed practice + Mock test preparation</div>
+                    <div>Weekend: Review week + Prep next week's plan</div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
 
+          {/* Plan Management */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">Planning Templates</CardTitle>
+              <CardTitle className="text-base">Plan Management</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="ghost" className="w-full justify-between">
-                <span>Intensive Reading Week</span>
-                <Badge variant="secondary">7 days</Badge>
-              </Button>
-              <Button variant="ghost" className="w-full justify-between">
-                <span>Balanced Skills Focus</span>
-                <Badge variant="secondary">7 days</Badge>
-              </Button>
-              <Button variant="ghost" className="w-full justify-between">
-                <span>Grammar Mastery Sprint</span>
-                <Badge variant="secondary">5 days</Badge>
-              </Button>
-              <Button variant="ghost" className="w-full justify-between">
-                <span>Vocabulary Expansion</span>
-                <Badge variant="secondary">10 days</Badge>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-16 flex-col gap-1">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  <span className="text-xs">Modify<br/>This Week</span>
+                </Button>
+                <Button variant="outline" className="h-16 flex-col gap-1">
+                  <Target className="w-4 h-4 text-secondary" />
+                  <span className="text-xs">Generate<br/>Next Week</span>
+                </Button>
+              </div>
+              
+              <Button variant="ghost" className="w-full justify-start gap-3">
+                <TrendingUp className="w-4 h-4 text-green-500" />
+                <span className="text-sm">View Planning Analytics</span>
               </Button>
             </CardContent>
           </Card>

@@ -17,7 +17,11 @@ interface Task {
   completed: boolean;
 }
 
-export function Home() {
+interface HomeProps {
+  onNavigateToTasks?: (subTab?: string) => void;
+}
+
+export function Home({ onNavigateToTasks }: HomeProps) {
   const [todayProgress, setTodayProgress] = useState(65);
   const [streakDays, setStreakDays] = useState(12);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -148,7 +152,7 @@ export function Home() {
       <StreakCounter streakDays={streakDays} />
 
       {/* Weekly Study Plan */}
-      <WeeklyStudyPlan />
+      <WeeklyStudyPlan onNavigateToTasks={onNavigateToTasks} />
 
       {/* Exam Countdown */}
       <ExamCountdown examDate={examDate} />

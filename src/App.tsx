@@ -14,13 +14,21 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const [tasksSubTab, setTasksSubTab] = useState("daily");
+
+  const navigateToTasks = (subTab?: string) => {
+    setActiveTab("tasks");
+    if (subTab) {
+      setTasksSubTab(subTab);
+    }
+  };
 
   const renderActiveScreen = () => {
     switch (activeTab) {
       case "home":
-        return <Home />;
+        return <Home onNavigateToTasks={navigateToTasks} />;
       case "tasks":
-        return <Tasks />;
+        return <Tasks initialTab={tasksSubTab} />;
       case "progress":
         return <Progress />;
       case "social":
@@ -28,7 +36,7 @@ const App = () => {
       case "settings":
         return <Settings />;
       default:
-        return <Home />;
+        return <Home onNavigateToTasks={navigateToTasks} />;
     }
   };
 
