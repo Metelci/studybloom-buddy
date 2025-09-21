@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { useNativeFeatures } from "@/hooks/useNativeFeatures";
+import { toast } from "sonner";
 import { 
   BookOpen,
   Brain,
@@ -18,7 +20,8 @@ import {
   Target,
   Trophy,
   Calendar,
-  TrendingUp
+  TrendingUp,
+  Bell
 } from "lucide-react";
 
 // Mock data for tasks
@@ -152,6 +155,7 @@ interface TasksProps {
 export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -175,6 +179,19 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   const filteredTasks = selectedCategory === "all" 
     ? dailyTasks 
     : dailyTasks.filter(task => task.category === selectedCategory);
+
+  const handleScheduleReminder = async (task: any) => {
+    if (isNative) {
+      // Schedule for 1 hour from now as example
+      const reminderTime = new Date();
+      reminderTime.setHours(reminderTime.getHours() + 1);
+      
+      await scheduleStudyReminder(task.title, reminderTime);
+      toast.success("Study reminder scheduled!");
+    } else {
+      toast.info("Install the mobile app to receive notifications");
+    }
+  };
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
@@ -315,14 +332,26 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                     </div>
                     
                     {!task.locked && (
-                      <Button 
-                        variant={task.completed ? "outline" : "default"} 
-                        size="sm" 
-                        className="w-full"
-                        disabled={task.completed}
-                      >
-                        {task.completed ? "Completed" : "Start Task"}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant={task.completed ? "outline" : "default"} 
+                          size="sm" 
+                          className="flex-1"
+                          disabled={task.completed}
+                        >
+                          {task.completed ? "Completed" : "Start Task"}
+                        </Button>
+                        {!task.completed && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleScheduleReminder(task)}
+                            className="shrink-0"
+                          >
+                            <Bell className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
                     )}
                   </CardContent>
                 </Card>

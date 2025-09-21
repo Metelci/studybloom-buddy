@@ -23,6 +23,8 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { useNativeFeatures } from "@/hooks/useNativeFeatures";
+import { Badge } from "@/components/ui/badge";
 
 interface SettingsSection {
   id: string;
@@ -235,6 +237,7 @@ const settingsData: Record<string, SettingItem[]> = {
 
 export function Settings() {
   const [activeSection, setActiveSection] = useState<string>("navigation");
+  const { isNative, notificationToken, scheduleStreakReminder } = useNativeFeatures();
   const [settings, setSettings] = useState<Record<string, any>>({
     bottom_nav: true,
     haptic_feedback: true,
@@ -307,8 +310,18 @@ export function Settings() {
     <div className="p-6 pb-20 max-w-md mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-on-surface mb-2">Settings</h1>
-        <p className="text-sm text-on-surface-variant">Customize your study experience</p>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold text-on-surface">Settings</h1>
+          {isNative && (
+            <Badge variant="secondary" className="bg-success/20 text-success">
+              Mobile App
+            </Badge>
+          )}
+        </div>
+        <p className="text-sm text-on-surface-variant">
+          Customize your study experience
+          {isNative && " • Native mobile features enabled"}
+        </p>
       </div>
 
       {/* Section Navigation */}
@@ -358,6 +371,17 @@ export function Settings() {
 
       {/* Quick Actions */}
       <div className="mt-6 space-y-3">
+        {isNative && (
+          <Button 
+            variant="outline" 
+            className="w-full justify-start text-on-surface border-outline-variant"
+            onClick={scheduleStreakReminder}
+          >
+            <Bell size={16} className="mr-2" />
+            Schedule Streak Reminder
+          </Button>
+        )}
+        
         <Button variant="outline" className="w-full justify-start text-on-surface border-outline-variant">
           <Bell size={16} className="mr-2" />
           Reset All Notifications

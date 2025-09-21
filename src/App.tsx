@@ -9,12 +9,16 @@ import { Progress } from "@/components/Progress";
 import { Social } from "@/components/Social";
 import { Tasks } from "@/components/Tasks";
 import { Settings } from "@/components/Settings";
+import { useNativeFeatures } from "@/hooks/useNativeFeatures";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [tasksSubTab, setTasksSubTab] = useState("daily");
+  
+  // Initialize native features
+  const nativeFeatures = useNativeFeatures();
 
   const navigateToTasks = (subTab?: string) => {
     setActiveTab("tasks");
