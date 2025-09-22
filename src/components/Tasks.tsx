@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
 import { useNativeFeatures } from "@/hooks/useNativeFeatures";
 import { toast } from "sonner";
 import { 
@@ -155,6 +156,7 @@ interface TasksProps {
 export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [weeklyGoal, setWeeklyGoal] = useState([15]);
   const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
 
   const getDifficultyColor = (difficulty: string) => {
@@ -204,6 +206,37 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           </Badge>
         </div>
       </div>
+
+      {/* Weekly Study Goal - Compact */}
+      <Card className="bg-tertiary-container/20 mb-4">
+        <CardContent className="p-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Target className="w-4 h-4 text-tertiary" />
+              <span className="text-sm font-medium text-on-surface">Weekly Goal</span>
+            </div>
+            <div className="text-right">
+              <span className="text-sm font-bold text-tertiary">{weeklyGoal[0]}h</span>
+              <p className="text-xs text-on-surface-variant">
+                ~{Math.round(weeklyGoal[0] / 7 * 10) / 10}h daily
+              </p>
+            </div>
+          </div>
+          <Slider
+            value={weeklyGoal}
+            onValueChange={setWeeklyGoal}
+            max={35}
+            min={3}
+            step={1}
+            className="w-full mb-2"
+          />
+          <div className="flex justify-between text-xs text-on-surface-variant">
+            <span>3h</span>
+            <span>15h</span>
+            <span>35h</span>
+          </div>
+        </CardContent>
+      </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4 mb-4">
