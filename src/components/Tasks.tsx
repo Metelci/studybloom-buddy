@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { useNativeFeatures } from "@/hooks/useNativeFeatures";
+import { nativeStorage } from "@/utils/nativeStorage";
 import { toast } from "sonner";
 import { 
   BookOpen,
@@ -157,7 +158,46 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [weeklyGoal, setWeeklyGoal] = useState([15]);
+  const [savedWeeklyGoal, setSavedWeeklyGoal] = useState([15]);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
+
+  // Load saved weekly goal on component mount
+  useEffect(() => {
+    const loadWeeklyGoal = async () => {
+      try {
+        const saved = await nativeStorage.getItem<number>('weeklyStudyGoal');
+        if (saved) {
+          setWeeklyGoal([saved]);
+          setSavedWeeklyGoal([saved]);
+        }
+      } catch (error) {
+        console.log('No saved weekly goal found');
+      }
+    };
+    loadWeeklyGoal();
+  }, []);
+
+  // Check for unsaved changes
+  useEffect(() => {
+    setHasUnsavedChanges(weeklyGoal[0] !== savedWeeklyGoal[0]);
+  }, [weeklyGoal, savedWeeklyGoal]);
+
+  const handleSaveWeeklyGoal = async () => {
+    try {
+      await nativeStorage.setItem('weeklyStudyGoal', weeklyGoal[0]);
+      setSavedWeeklyGoal([...weeklyGoal]);
+      setHasUnsavedChanges(false);
+      toast.success("Weekly goal saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save weekly goal");
+    }
+  };
+
+  const handleCancelWeeklyGoal = () => {
+    setWeeklyGoal([...savedWeeklyGoal]);
+    setHasUnsavedChanges(false);
+  };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -208,12 +248,17 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
       </div>
 
       {/* Weekly Study Goal - Compact */}
-      <Card className="bg-tertiary-container/20 mb-4">
+      <Card className={`mb-4 transition-all ${hasUnsavedChanges ? 'bg-warning/5 border-warning/20' : 'bg-tertiary-container/20'}`}>
         <CardContent className="p-3">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Target className="w-4 h-4 text-tertiary" />
               <span className="text-sm font-medium text-on-surface">Weekly Goal</span>
+              {hasUnsavedChanges && (
+                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30">
+                  Unsaved
+                </Badge>
+              )}
             </div>
             <div className="text-right">
               <span className="text-sm font-bold text-tertiary">{weeklyGoal[0]}h</span>
@@ -230,11 +275,39 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
             step={1}
             className="w-full mb-2"
           />
-          <div className="flex justify-between text-xs text-on-surface-variant">
-            <span>3h</span>
-            <span>15h</span>
-            <span>35h</span>
+          <div className="flex justify-between text-xs text-on-surface-variant mb-3">
+            <span>3h (Casual)</span>
+            <span>15h (Balanced)</span>
+            <span>35h (Intensive)</span>
           </div>
+          
+          {hasUnsavedChanges && (
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleCancelWeeklyGoal}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button 
+                size="sm" 
+                onClick={handleSaveWeeklyGoal}
+                className="flex-1"
+              >
+                Save Goal
+              </Button>
+            </div>
+          )}
+          
+          {!hasUnsavedChanges && (
+            <div className="text-center">
+              <Badge variant="secondary" className="text-xs bg-success/10 text-success border-success/20">
+                Goal Saved: {savedWeeklyGoal[0]}h/week
+              </Badge>
+            </div>
+          )}
         </CardContent>
       </Card>
 
