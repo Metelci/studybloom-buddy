@@ -5,6 +5,8 @@ import { StreakCounter } from "./StreakCounter";
 import { TaskCard } from "./TaskCard";
 import { ExamCountdown } from "./ExamCountdown";
 import { WeeklyStudyPlan } from "./WeeklyStudyPlan";
+import { ExamInfo } from "./ExamInfo";
+import { ExamService, type ExamData } from "@/services/examService";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +27,8 @@ export function Home({ onNavigateToTasks }: HomeProps) {
   const [todayProgress, setTodayProgress] = useState(65);
   const [streakDays, setStreakDays] = useState(12);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showExamInfo, setShowExamInfo] = useState(false);
+  const [examData, setExamData] = useState<ExamData | null>(null);
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: "1",
@@ -52,7 +56,21 @@ export function Home({ onNavigateToTasks }: HomeProps) {
     }
   ]);
 
-  const examDate = new Date('2024-12-15');
+  useEffect(() => {
+    // Load exam data when component mounts
+    const loadExamData = async () => {
+      try {
+        const data = await ExamService.getExamData();
+        setExamData(data);
+      } catch (error) {
+        console.error('Error loading exam data:', error);
+      }
+    };
+    loadExamData();
+  }, []);
+
+  const nextExam = examData?.nextExam;
+  const examDate = nextExam ? new Date(nextExam.date) : new Date('2025-03-15');
   const completedTasks = tasks.filter(task => task.completed);
   const todayScore = completedTasks.reduce((sum, task) => sum + task.points, 0);
   
@@ -73,6 +91,10 @@ export function Home({ onNavigateToTasks }: HomeProps) {
       }
     }
   };
+
+  if (showExamInfo) {
+    return <ExamInfo onBack={() => setShowExamInfo(false)} />;
+  }
 
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
@@ -99,13 +121,16 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         {/* Countdown Card */}
-        <Card className="flex-1 p-3 bg-primary-container">
+        <Card 
+          className="flex-1 p-3 bg-primary-container cursor-pointer hover:bg-primary-container/80 transition-colors"
+          onClick={() => setShowExamInfo(true)}
+        >
           <div className="text-center">
             <div className="text-2xl font-bold text-primary-container-foreground mb-1">
               {Math.ceil((examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))}
             </div>
             <div className="text-xs text-primary-container-foreground/80 mb-2">
-              Days to YDS
+              Days to {nextExam?.name || 'YDS'}
             </div>
             
             {/* Progress Bar */}
@@ -121,7 +146,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
             </div>
             
             <div className="text-xs text-primary-container-foreground/60 mt-1">
-              Exam Preparation
+              {nextExam?.status || 'Exam Preparation'}
             </div>
           </div>
         </Card>
