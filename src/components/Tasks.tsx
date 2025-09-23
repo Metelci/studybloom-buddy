@@ -237,13 +237,28 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-on-surface">Tasks</h1>
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="gap-1">
-            <Zap className="w-3 h-3" />
-            1,250 XP
-          </Badge>
+      {/* Header */}
+      <div className="relative bg-gradient-to-r from-primary/10 via-secondary/5 to-tertiary/10 rounded-2xl p-5 mb-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-tertiary/5 rounded-full blur-xl" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Target className="w-5 h-5 text-primary" />
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Daily Tasks
+              </h1>
+            </div>
+            <p className="text-xs text-on-surface-variant/80">
+              Complete tasks to build your streak
+            </p>
+          </div>
+          <div className="text-right">
+            <Badge className="bg-gradient-to-r from-primary to-secondary text-primary-foreground gap-1.5 px-3 py-1">
+              <Zap className="w-4 h-4" />
+              1,250 XP
+            </Badge>
+          </div>
         </div>
       </div>
 

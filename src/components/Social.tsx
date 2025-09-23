@@ -158,12 +158,31 @@ export function Social() {
         </AlertDescription>
       </Alert>
 
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-on-surface">Social Hub</h1>
-        <Button variant="outline" size="sm" className="gap-1.5">
-          <UserPlus className="w-4 h-4" />
-          Invite Friends
-        </Button>
+      {/* Header */}
+      <div className="relative bg-gradient-to-r from-secondary/10 via-success/5 to-primary/10 rounded-2xl p-5 mb-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-success/5 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-secondary/5 rounded-full blur-xl" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Users className="w-5 h-5 text-success" />
+              <h1 className="text-xl font-bold bg-gradient-to-r from-success to-secondary bg-clip-text text-transparent">
+                Social Hub
+              </h1>
+            </div>
+            <p className="text-xs text-on-surface-variant/80">
+              Connect with fellow YDS students
+            </p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="gap-1.5 bg-gradient-to-r from-success/10 to-secondary/10 border-success/20 hover:border-success/30 transition-all"
+          >
+            <UserPlus className="w-4 h-4" />
+            Invite
+          </Button>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

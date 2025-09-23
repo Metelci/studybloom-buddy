@@ -309,19 +309,32 @@ export function Settings() {
   return (
     <div className="p-6 pb-20 max-w-md mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold text-on-surface">Settings</h1>
-          {isNative && (
-            <Badge variant="secondary" className="bg-success/20 text-success">
-              Mobile App
-            </Badge>
-          )}
+      <div className="relative bg-gradient-to-br from-warning/10 via-primary/5 to-tertiary/10 rounded-2xl p-6 mb-6 overflow-hidden">
+        <div className="absolute top-2 right-2 w-24 h-24 bg-warning/5 rounded-full blur-2xl" />
+        <div className="absolute bottom-2 left-2 w-20 h-20 bg-tertiary/5 rounded-full blur-xl" />
+        <div className="relative">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <Brain size={20} className="text-primary" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-warning bg-clip-text text-transparent">
+                  Settings
+                </h1>
+                <p className="text-xs text-on-surface-variant/80">
+                  Customize your study experience
+                </p>
+              </div>
+            </div>
+            {isNative && (
+              <Badge className="bg-gradient-to-r from-success/20 to-primary/20 text-success border-success/30">
+                <Smartphone size={12} className="mr-1" />
+                Native
+              </Badge>
+            )}
+          </div>
         </div>
-        <p className="text-sm text-on-surface-variant">
-          Customize your study experience
-          {isNative && " • Native mobile features enabled"}
-        </p>
       </div>
 
       {/* Section Navigation */}

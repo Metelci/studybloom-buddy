@@ -107,13 +107,21 @@ export function Progress() {
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="text-center mb-3">
-        <h1 className="text-xl font-bold text-on-surface mb-1">
-          Your Progress 📊
-        </h1>
-        <p className="text-sm text-on-surface-variant">
-          Track your YDS exam preparation
-        </p>
+      <div className="relative bg-gradient-to-br from-tertiary/10 via-primary/5 to-secondary/10 rounded-2xl p-6 mb-4 overflow-hidden">
+        <div className="absolute top-2 right-4 w-16 h-16 bg-tertiary/10 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-4 w-20 h-20 bg-primary/5 rounded-full blur-2xl" />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-xs font-medium mb-3">
+            <BarChart3 size={12} />
+            Analytics Dashboard
+          </div>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-tertiary to-primary bg-clip-text text-transparent mb-2">
+            Your Progress 📊
+          </h1>
+          <p className="text-sm text-on-surface-variant/80">
+            Track your journey to YDS success
+          </p>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
