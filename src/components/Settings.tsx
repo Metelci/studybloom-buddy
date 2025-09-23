@@ -309,9 +309,9 @@ export function Settings() {
   return (
     <div className="p-6 pb-20 max-w-md mx-auto">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-warning/25 via-primary/30 to-tertiary/20 rounded-2xl p-4 mb-3 overflow-hidden">
-        <div className="absolute top-2 right-2 w-16 h-16 bg-warning/15 rounded-full blur-xl" />
-        <div className="absolute bottom-2 left-2 w-12 h-12 bg-tertiary/20 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-br from-warning/50 via-primary/55 to-tertiary/45 rounded-2xl p-4 mb-3 overflow-hidden">
+        <div className="absolute top-2 right-2 w-16 h-16 bg-warning/35 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-12 h-12 bg-tertiary/40 rounded-full blur-xl" />
         <div className="relative">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
