@@ -238,9 +238,9 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
       {/* Header */}
-      <div className="relative bg-gradient-to-r from-primary/10 via-secondary/5 to-tertiary/10 rounded-2xl p-5 mb-4 overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-20 h-20 bg-tertiary/5 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-r from-primary/30 via-secondary/20 to-tertiary/25 rounded-2xl p-5 mb-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-tertiary/15 rounded-full blur-xl" />
         <div className="relative flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">

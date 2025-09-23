@@ -107,9 +107,9 @@ export function Progress() {
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-tertiary/10 via-primary/5 to-secondary/10 rounded-2xl p-6 mb-4 overflow-hidden">
-        <div className="absolute top-2 right-4 w-16 h-16 bg-tertiary/10 rounded-full blur-xl" />
-        <div className="absolute bottom-2 left-4 w-20 h-20 bg-primary/5 rounded-full blur-2xl" />
+      <div className="relative bg-gradient-to-br from-tertiary/30 via-primary/25 to-secondary/20 rounded-2xl p-6 mb-4 overflow-hidden">
+        <div className="absolute top-2 right-4 w-16 h-16 bg-tertiary/20 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-4 w-20 h-20 bg-primary/15 rounded-full blur-2xl" />
         <div className="relative text-center">
           <div className="inline-flex items-center gap-2 bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-xs font-medium mb-3">
             <BarChart3 size={12} />

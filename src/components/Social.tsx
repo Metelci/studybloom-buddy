@@ -159,9 +159,9 @@ export function Social() {
       </Alert>
 
       {/* Header */}
-      <div className="relative bg-gradient-to-r from-secondary/10 via-success/5 to-primary/10 rounded-2xl p-5 mb-4 overflow-hidden">
-        <div className="absolute top-0 right-0 w-28 h-28 bg-success/5 rounded-full blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-20 h-20 bg-secondary/5 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-r from-secondary/25 via-success/20 to-primary/30 rounded-2xl p-5 mb-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-success/15 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-secondary/20 rounded-full blur-xl" />
         <div className="relative flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">

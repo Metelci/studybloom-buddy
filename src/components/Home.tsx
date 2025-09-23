@@ -99,9 +99,9 @@ export function Home({ onNavigateToTasks }: HomeProps) {
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-primary/10 via-secondary/5 to-tertiary/10 rounded-2xl p-6 mb-4 overflow-hidden">
-        <div className="absolute top-2 right-2 w-20 h-20 bg-primary/5 rounded-full blur-xl" />
-        <div className="absolute bottom-2 left-2 w-16 h-16 bg-secondary/5 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/20 to-tertiary/30 rounded-2xl p-6 mb-4 overflow-hidden">
+        <div className="absolute top-2 right-2 w-20 h-20 bg-primary/15 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-16 h-16 bg-secondary/15 rounded-full blur-xl" />
         <div className="relative text-center">
           <div className="inline-flex items-center gap-2 bg-success/10 text-success px-3 py-1 rounded-full text-xs font-medium mb-3">
             <Sparkles size={12} />
