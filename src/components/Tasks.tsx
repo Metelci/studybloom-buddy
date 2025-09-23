@@ -245,7 +245,7 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Target className="w-5 h-5 text-primary" />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-primary drop-shadow-sm">
                 Daily Tasks
               </h1>
             </div>

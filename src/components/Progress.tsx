@@ -115,7 +115,7 @@ export function Progress() {
             <BarChart3 size={12} />
             Analytics Dashboard
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-tertiary to-primary bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl font-bold text-tertiary drop-shadow-sm mb-2">
             Your Progress 📊
           </h1>
           <p className="text-sm text-on-surface-variant/80">

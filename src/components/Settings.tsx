@@ -319,7 +319,7 @@ export function Settings() {
                 <Brain size={20} className="text-primary" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-warning bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold text-primary drop-shadow-sm">
                   Settings
                 </h1>
                 <p className="text-xs text-on-surface-variant/80">

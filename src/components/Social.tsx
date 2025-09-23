@@ -166,7 +166,7 @@ export function Social() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-5 h-5 text-success" />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-success to-secondary bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-success drop-shadow-sm">
                 Social Hub
               </h1>
             </div>

@@ -107,7 +107,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
             <Sparkles size={12} />
             Ready to Study
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl font-bold text-primary drop-shadow-sm mb-2">
             Good morning! 👋
           </h1>
           <p className="text-sm text-on-surface-variant/80">
