@@ -99,18 +99,18 @@ export function Home({ onNavigateToTasks }: HomeProps) {
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/20 to-tertiary/30 rounded-2xl p-6 mb-4 overflow-hidden">
-        <div className="absolute top-2 right-2 w-20 h-20 bg-primary/15 rounded-full blur-xl" />
-        <div className="absolute bottom-2 left-2 w-16 h-16 bg-secondary/15 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-br from-primary/25 via-secondary/20 to-tertiary/30 rounded-2xl p-4 mb-3 overflow-hidden">
+        <div className="absolute top-2 right-2 w-16 h-16 bg-primary/15 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-12 h-12 bg-secondary/15 rounded-full blur-xl" />
         <div className="relative text-center">
-          <div className="inline-flex items-center gap-2 bg-success/10 text-success px-3 py-1 rounded-full text-xs font-medium mb-3">
-            <Sparkles size={12} />
+          <div className="inline-flex items-center gap-2 bg-success/10 text-success px-2.5 py-0.5 rounded-full text-xs font-medium mb-2">
+            <Sparkles size={10} />
             Ready to Study
           </div>
-          <h1 className="text-2xl font-bold text-primary drop-shadow-sm mb-2">
+          <h1 className="text-xl font-bold text-primary drop-shadow-sm mb-1">
             Good morning! 👋
           </h1>
-          <p className="text-sm text-on-surface-variant/80">
+          <p className="text-xs text-on-surface-variant/80">
             Let's make today count toward your YDS success
           </p>
         </div>
