@@ -309,17 +309,17 @@ export function Settings() {
   return (
     <div className="p-6 pb-20 max-w-md mx-auto">
       {/* Header */}
-      <div className="relative bg-gradient-to-br from-warning/25 via-primary/30 to-tertiary/20 rounded-2xl p-6 mb-6 overflow-hidden">
-        <div className="absolute top-2 right-2 w-24 h-24 bg-warning/15 rounded-full blur-2xl" />
-        <div className="absolute bottom-2 left-2 w-20 h-20 bg-tertiary/20 rounded-full blur-xl" />
+      <div className="relative bg-gradient-to-br from-warning/25 via-primary/30 to-tertiary/20 rounded-2xl p-4 mb-3 overflow-hidden">
+        <div className="absolute top-2 right-2 w-16 h-16 bg-warning/15 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-12 h-12 bg-tertiary/20 rounded-full blur-xl" />
         <div className="relative">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-xl">
-                <Brain size={20} className="text-primary" />
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-primary/10 rounded-lg">
+                <Brain size={16} className="text-primary" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-primary drop-shadow-sm">
+                <h1 className="text-xl font-bold text-primary drop-shadow-sm">
                   Settings
                 </h1>
                 <p className="text-xs text-on-surface-variant/80">
