@@ -107,10 +107,10 @@ export function Home({ onNavigateToTasks }: HomeProps) {
             <Sparkles size={10} />
             Ready to Study
           </div>
-          <h1 className="text-xl font-bold text-primary drop-shadow-sm mb-1">
+          <h1 className="text-xl font-bold text-white drop-shadow-md mb-1" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
             Good morning! 👋
           </h1>
-          <p className="text-xs text-on-surface-variant/80">
+          <p className="text-xs text-white/90 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
             Let's make today count toward your YDS success
           </p>
         </div>

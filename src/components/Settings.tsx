@@ -319,10 +319,10 @@ export function Settings() {
                 <Brain size={16} className="text-primary" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-primary drop-shadow-sm">
+                <h1 className="text-xl font-bold text-white drop-shadow-md" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
                   Settings
                 </h1>
-                <p className="text-xs text-on-surface-variant/80">
+                <p className="text-xs text-white/90 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
                   Customize your study experience
                 </p>
               </div>
