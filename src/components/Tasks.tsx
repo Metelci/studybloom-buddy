@@ -245,11 +245,11 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Target className="w-5 h-5 text-primary" />
-              <h1 className="text-xl font-bold text-white drop-shadow-md" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
+              <h1 className="text-xl font-bold text-slate-900 drop-shadow-md" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
                 Daily Tasks
               </h1>
             </div>
-            <p className="text-xs text-white/90 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.4)'}}>
+            <p className="text-xs text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
               Complete tasks to build your streak
             </p>
           </div>
