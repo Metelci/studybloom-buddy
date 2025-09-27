@@ -361,9 +361,9 @@ export function Progress() {
                     </>
                   )}
                   
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className={`p-2.5 rounded-full ${getIconContainer(achievement.tier, achievement.earned)} relative`}>
+                  <CardContent className="p-3">
+                    <div className="flex items-start gap-2">
+                      <div className={`p-2 rounded-full ${getIconContainer(achievement.tier, achievement.earned)} relative`}>
                         {achievement.earned && achievement.tier === 'platinum' && (
                           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-300/50 to-purple-600/50 animate-pulse" />
                         )}
@@ -373,7 +373,7 @@ export function Progress() {
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2 mb-2">
+                        <div className="flex items-start justify-between gap-2 mb-1">
                           <h3 className={`font-semibold text-sm leading-tight ${
                             achievement.earned 
                               ? 'text-foreground' 
@@ -397,7 +397,7 @@ export function Progress() {
                           </div>
                         </div>
                         
-                        <p className={`text-xs mb-2 leading-relaxed ${
+                        <p className={`text-xs mb-1 leading-relaxed ${
                           achievement.earned 
                             ? 'text-foreground/80' 
                             : 'text-on-surface-variant/80'
