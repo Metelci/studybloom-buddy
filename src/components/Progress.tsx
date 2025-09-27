@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrendingUp, Target, Clock, Award, BookOpen, Headphones, FileText, Sparkles, Brain, BarChart3, Calendar, Zap, Eye, AlertCircle } from "lucide-react";
+import { TrendingUp, Target, Clock, Award, BookOpen, Headphones, FileText, Sparkles, Brain, BarChart3, Calendar, Zap, Eye, AlertCircle, Trophy, Crown, Medal, Star, Gem } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress as ProgressBar } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,6 +22,9 @@ interface Achievement {
   icon: React.ReactNode;
   earned: boolean;
   date?: string;
+  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  points: number;
 }
 
 export function Progress() {
@@ -74,29 +77,62 @@ export function Progress() {
       description: "Complete your first task",
       icon: <Target size={16} />,
       earned: true,
-      date: "2024-01-15"
+      date: "2024-01-15",
+      tier: 'bronze',
+      rarity: 'common',
+      points: 50
     },
     {
       id: "2",
       title: "Week Warrior",
       description: "Maintain 7-day streak",
-      icon: <Award size={16} />,
+      icon: <Trophy size={16} />,
       earned: true,
-      date: "2024-02-03"
+      date: "2024-02-03",
+      tier: 'silver',
+      rarity: 'rare',
+      points: 150
     },
     {
       id: "3",
       title: "Grammar Master",
       description: "Score 90% in grammar",
-      icon: <FileText size={16} />,
-      earned: false
+      icon: <Crown size={16} />,
+      earned: false,
+      tier: 'gold',
+      rarity: 'epic',
+      points: 300
     },
     {
       id: "4",
       title: "Speed Reader",
       description: "Read 50 articles",
       icon: <BookOpen size={16} />,
-      earned: false
+      earned: false,
+      tier: 'silver',
+      rarity: 'rare',
+      points: 200
+    },
+    {
+      id: "5",
+      title: "Perfect Score Legend",
+      description: "Get 100% on 5 consecutive tests",
+      icon: <Gem size={16} />,
+      earned: false,
+      tier: 'platinum',
+      rarity: 'legendary',
+      points: 500
+    },
+    {
+      id: "6",
+      title: "Study Streak Champion",
+      description: "Maintain 30-day study streak",
+      icon: <Medal size={16} />,
+      earned: true,
+      date: "2024-01-20",
+      tier: 'gold',
+      rarity: 'epic',
+      points: 400
     }
   ];
 
@@ -240,51 +276,203 @@ export function Progress() {
           ))}
         </TabsContent>
 
-        <TabsContent value="achievements" className="space-y-2 mt-0">
-          <div className="grid gap-2">
-            {achievements.map((achievement) => (
-              <Card 
-                key={achievement.id} 
-                className={`p-3 ${achievement.earned ? 'bg-success-container' : 'bg-surface-container opacity-60'}`}
-              >
-                <div className="flex items-center gap-2">
-                  <div className={`p-1.5 rounded-full ${
-                    achievement.earned 
-                      ? 'bg-success text-success-foreground' 
-                      : 'bg-surface text-on-surface-variant'
-                  }`}>
-                    {achievement.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`font-medium text-sm ${
-                      achievement.earned 
-                        ? 'text-success-container-foreground' 
-                        : 'text-on-surface-variant'
-                    }`}>
-                      {achievement.title}
-                    </h3>
-                    <p className={`text-xs ${
-                      achievement.earned 
-                        ? 'text-success-container-foreground/80' 
-                        : 'text-on-surface-variant/80'
-                    }`}>
-                      {achievement.description}
-                    </p>
-                    {achievement.earned && achievement.date && (
-                      <p className="text-xs text-success-container-foreground/60 mt-1">
-                        Earned on {new Date(achievement.date).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
-                  {achievement.earned && (
-                    <Badge className="bg-success text-success-foreground text-xs">
-                      ✓
-                    </Badge>
-                  )}
-                </div>
-              </Card>
-            ))}
+        <TabsContent value="achievements" className="space-y-3 mt-0">
+          {/* Achievement Stats Header */}
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-bronze/20 to-achievement-bronze/5 border-achievement-bronze/30">
+              <div className="text-lg font-bold text-achievement-bronze mb-1">{achievements.filter(a => a.earned && a.tier === 'bronze').length}</div>
+              <div className="text-xs text-muted-foreground">Bronze</div>
+            </Card>
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-silver/20 to-achievement-silver/5 border-achievement-silver/30">
+              <div className="text-lg font-bold text-achievement-silver mb-1">{achievements.filter(a => a.earned && a.tier === 'silver').length}</div>
+              <div className="text-xs text-muted-foreground">Silver</div>
+            </Card>
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-gold/20 to-achievement-gold/5 border-achievement-gold/30">
+              <div className="text-lg font-bold text-achievement-gold mb-1">{achievements.filter(a => a.earned && a.tier === 'gold').length}</div>
+              <div className="text-xs text-muted-foreground">Gold</div>
+            </Card>
           </div>
+
+          {/* Achievements Grid */}
+          <div className="grid gap-3">
+            {achievements.map((achievement) => {
+              const getTierGradient = (tier: string, earned: boolean) => {
+                if (!earned) return 'bg-surface-container border-outline-variant';
+                
+                switch (tier) {
+                  case 'bronze':
+                    return 'bg-gradient-to-br from-[#CD7F32]/20 via-[#CD7F32]/10 to-[#CD7F32]/5 border-[#CD7F32]/40 shadow-lg shadow-[#CD7F32]/10';
+                  case 'silver':
+                    return 'bg-gradient-to-br from-slate-400/20 via-slate-300/10 to-slate-200/5 border-slate-400/40 shadow-lg shadow-slate-400/10';
+                  case 'gold':
+                    return 'bg-gradient-to-br from-yellow-400/20 via-yellow-300/10 to-yellow-200/5 border-yellow-400/40 shadow-lg shadow-yellow-400/10';
+                  case 'platinum':
+                    return 'bg-gradient-to-br from-purple-400/20 via-purple-300/10 to-purple-200/5 border-purple-400/40 shadow-lg shadow-purple-400/10';
+                  default:
+                    return 'bg-surface-container border-outline-variant';
+                }
+              };
+
+              const getRarityBadge = (rarity: string) => {
+                switch (rarity) {
+                  case 'common':
+                    return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+                  case 'rare':
+                    return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+                  case 'epic':
+                    return 'bg-purple-500/10 text-purple-600 border-purple-500/20';
+                  case 'legendary':
+                    return 'bg-gradient-to-r from-yellow-400/10 to-orange-400/10 text-orange-600 border-orange-400/20';
+                  default:
+                    return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+                }
+              };
+
+              const getIconContainer = (tier: string, earned: boolean) => {
+                if (!earned) return 'bg-surface text-on-surface-variant';
+                
+                switch (tier) {
+                  case 'bronze':
+                    return 'bg-gradient-to-br from-[#CD7F32] to-[#B8860B] text-white shadow-md';
+                  case 'silver':
+                    return 'bg-gradient-to-br from-slate-400 to-slate-500 text-white shadow-md';
+                  case 'gold':
+                    return 'bg-gradient-to-br from-yellow-400 to-yellow-500 text-white shadow-md';
+                  case 'platinum':
+                    return 'bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md';
+                  default:
+                    return 'bg-surface text-on-surface-variant';
+                }
+              };
+
+              return (
+                <Card 
+                  key={achievement.id} 
+                  className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${getTierGradient(achievement.tier, achievement.earned)} ${
+                    achievement.earned ? 'animate-pulse' : 'opacity-60 hover:opacity-80'
+                  }`}
+                >
+                  {/* Sparkle Effect for Earned Achievements */}
+                  {achievement.earned && (
+                    <>
+                      <div className="absolute top-2 right-2 w-2 h-2 bg-white rounded-full animate-ping" />
+                      <div className="absolute top-4 right-6 w-1 h-1 bg-white rounded-full animate-ping animation-delay-100" />
+                      <div className="absolute top-6 right-3 w-1.5 h-1.5 bg-white rounded-full animate-ping animation-delay-200" />
+                    </>
+                  )}
+                  
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className={`p-2.5 rounded-full ${getIconContainer(achievement.tier, achievement.earned)} relative`}>
+                        {achievement.earned && achievement.tier === 'platinum' && (
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-300/50 to-purple-600/50 animate-pulse" />
+                        )}
+                        <div className="relative z-10">
+                          {achievement.icon}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <h3 className={`font-semibold text-sm leading-tight ${
+                            achievement.earned 
+                              ? 'text-foreground' 
+                              : 'text-on-surface-variant'
+                          }`}>
+                            {achievement.title}
+                          </h3>
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge 
+                              variant="outline" 
+                              className={`text-[10px] px-1.5 py-0.5 ${getRarityBadge(achievement.rarity)}`}
+                            >
+                              {achievement.rarity}
+                            </Badge>
+                            {achievement.earned && (
+                              <div className="flex items-center gap-1">
+                                <Star size={10} className="text-yellow-500 fill-yellow-500" />
+                                <span className="text-xs font-medium text-yellow-600">+{achievement.points}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <p className={`text-xs mb-2 leading-relaxed ${
+                          achievement.earned 
+                            ? 'text-foreground/80' 
+                            : 'text-on-surface-variant/80'
+                        }`}>
+                          {achievement.description}
+                        </p>
+                        
+                        <div className="flex items-center justify-between">
+                          {achievement.earned && achievement.date && (
+                            <p className="text-xs text-muted-foreground">
+                              Earned {new Date(achievement.date).toLocaleDateString()}
+                            </p>
+                          )}
+                          {!achievement.earned && (
+                            <p className="text-xs text-muted-foreground">
+                              {achievement.points} points reward
+                            </p>
+                          )}
+                          
+                          {achievement.earned && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                              <span className="text-xs font-medium text-green-600">Completed</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  
+                  {/* Bottom Glow Effect for Special Achievements */}
+                  {achievement.earned && achievement.tier === 'platinum' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
+                  )}
+                  {achievement.earned && achievement.tier === 'gold' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent" />
+                  )}
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Achievement Progress Summary */}
+          <Card className="p-4 bg-gradient-to-br from-primary/10 via-secondary/5 to-tertiary/10 border-primary/20 mt-4">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-2 bg-primary rounded-full">
+                <Award className="w-4 h-4 text-primary-foreground" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm text-foreground">Achievement Progress</h3>
+                <p className="text-xs text-muted-foreground">
+                  {achievements.filter(a => a.earned).length} of {achievements.length} unlocked
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Progress</span>
+                <span className="font-medium text-foreground">
+                  {Math.round((achievements.filter(a => a.earned).length / achievements.length) * 100)}%
+                </span>
+              </div>
+              <ProgressBar 
+                value={(achievements.filter(a => a.earned).length / achievements.length) * 100} 
+                className="h-2"
+              />
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Total Points Earned</span>
+                <span className="font-medium text-primary">
+                  {achievements.filter(a => a.earned).reduce((sum, a) => sum + a.points, 0)} pts
+                </span>
+              </div>
+            </div>
+          </Card>
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-3 mt-0">
