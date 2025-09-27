@@ -349,17 +349,9 @@ export function Progress() {
                 <Card 
                   key={achievement.id} 
                   className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${getTierGradient(achievement.tier, achievement.earned)} ${
-                    achievement.earned ? 'animate-pulse' : 'opacity-60 hover:opacity-80'
+                    achievement.earned ? '' : 'opacity-60 hover:opacity-80'
                   }`}
                 >
-                  {/* Sparkle Effect for Earned Achievements */}
-                  {achievement.earned && (
-                    <>
-                      <div className="absolute top-2 right-2 w-2 h-2 bg-white rounded-full animate-ping" />
-                      <div className="absolute top-4 right-6 w-1 h-1 bg-white rounded-full animate-ping animation-delay-100" />
-                      <div className="absolute top-6 right-3 w-1.5 h-1.5 bg-white rounded-full animate-ping animation-delay-200" />
-                    </>
-                  )}
                   
                   <CardContent className="p-3">
                     <div className="flex items-start gap-2">
