@@ -26,7 +26,7 @@ import {
   Bell
 } from "lucide-react";
 
-// Mock data for tasks
+// Initial task categories - progress will be tracked as users complete tasks
 const taskCategories = [
   {
     id: "vocabulary",
@@ -34,9 +34,9 @@ const taskCategories = [
     icon: BookOpen,
     color: "text-blue-500",
     bgColor: "bg-blue-500/10",
-    progress: 75,
+    progress: 0,
     dailyTarget: 50,
-    completed: 38
+    completed: 0
   },
   {
     id: "grammar",
@@ -44,9 +44,9 @@ const taskCategories = [
     icon: PenTool,
     color: "text-green-500",
     bgColor: "bg-green-500/10",
-    progress: 60,
+    progress: 0,
     dailyTarget: 30,
-    completed: 18
+    completed: 0
   },
   {
     id: "reading",
@@ -54,9 +54,9 @@ const taskCategories = [
     icon: Brain,
     color: "text-purple-500", 
     bgColor: "bg-purple-500/10",
-    progress: 45,
+    progress: 0,
     dailyTarget: 20,
-    completed: 9
+    completed: 0
   },
   {
     id: "listening",
@@ -64,90 +64,18 @@ const taskCategories = [
     icon: Headphones,
     color: "text-orange-500",
     bgColor: "bg-orange-500/10", 
-    progress: 85,
+    progress: 0,
     dailyTarget: 25,
-    completed: 21
+    completed: 0
   }
 ];
 
 const dailyTasks = [
-  {
-    id: 1,
-    title: "Learn 20 New Words",
-    category: "vocabulary",
-    difficulty: "easy",
-    points: 50,
-    timeEstimate: "15 min",
-    completed: true,
-    streak: 5
-  },
-  {
-    id: 2, 
-    title: "Complete Grammar Quiz",
-    category: "grammar",
-    difficulty: "medium",
-    points: 75,
-    timeEstimate: "20 min",
-    completed: true,
-    streak: 3
-  },
-  {
-    id: 3,
-    title: "Reading Comprehension",
-    category: "reading", 
-    difficulty: "hard",
-    points: 100,
-    timeEstimate: "30 min",
-    completed: false,
-    streak: 0,
-    locked: false
-  },
-  {
-    id: 4,
-    title: "Listening Practice",
-    category: "listening",
-    difficulty: "medium", 
-    points: 80,
-    timeEstimate: "25 min",
-    completed: false,
-    streak: 0,
-    locked: false
-  },
-  {
-    id: 5,
-    title: "Advanced Vocabulary",
-    category: "vocabulary",
-    difficulty: "hard",
-    points: 120,
-    timeEstimate: "35 min", 
-    completed: false,
-    streak: 0,
-    locked: true
-  }
+  // Daily tasks will be generated based on user's study plan and progress
 ];
 
 const weeklyGoals = [
-  {
-    title: "Complete 50 Vocabulary Tasks",
-    progress: 68,
-    current: 34,
-    target: 50,
-    reward: "200 XP + Badge"
-  },
-  {
-    title: "Maintain 7-Day Streak",
-    progress: 71,
-    current: 5,
-    target: 7,
-    reward: "Streak Master Badge"
-  },
-  {
-    title: "Score 80%+ on All Quizzes",
-    progress: 45,
-    current: 9,
-    target: 20,
-    reward: "Perfectionist Title"
-  }
+  // Weekly goals will be set by users based on their study preferences
 ];
 
 interface TasksProps {
@@ -395,89 +323,104 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
 
           {/* Task List */}
           <div className="space-y-3">
-            {filteredTasks.map((task) => {
-              const CategoryIcon = getCategoryIcon(task.category);
-              return (
-                <Card 
-                  key={task.id} 
-                  className={`transition-all ${
-                    task.locked 
-                      ? "opacity-50 bg-surface-variant/30" 
-                      : task.completed 
-                        ? "bg-success/10 border-success/20" 
-                        : "hover:bg-surface-variant/50"
-                  }`}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-start gap-3 flex-1">
-                        <div className="flex items-center justify-center w-6 h-6 mt-0.5">
-                          {task.locked ? (
-                            <Lock className="w-4 h-4 text-on-surface-variant" />
-                          ) : task.completed ? (
-                            <CheckCircle2 className="w-5 h-5 text-success" />
-                          ) : (
-                            <Circle className="w-5 h-5 text-on-surface-variant" />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className={`text-sm font-medium mb-1 ${
-                            task.completed ? "line-through text-on-surface-variant" : "text-on-surface"
-                          }`}>
-                            {task.title}
-                          </h4>
-                          <div className="flex items-center gap-2 mb-2">
-                            <CategoryIcon className={`w-3 h-3 ${getCategoryColor(task.category)}`} />
-                            <Badge variant="outline" className={`text-xs border ${getDifficultyColor(task.difficulty)}`}>
-                              {task.difficulty}
-                            </Badge>
-                            {task.streak > 0 && (
-                              <Badge variant="secondary" className="text-xs gap-1">
-                                <Star className="w-3 h-3" />
-                                {task.streak}
-                              </Badge>
+            {dailyTasks.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target size={32} className="text-primary" />
+                </div>
+                <h4 className="text-base font-semibold text-on-surface mb-2">No Tasks Yet</h4>
+                <p className="text-sm text-on-surface-variant mb-4">
+                  Your personalized daily tasks will appear here once you set up your study plan.
+                </p>
+                <Button variant="outline" size="sm">
+                  Create Study Plan
+                </Button>
+              </div>
+            ) : (
+              filteredTasks.map((task) => {
+                const CategoryIcon = getCategoryIcon(task.category);
+                return (
+                  <Card 
+                    key={task.id} 
+                    className={`transition-all ${
+                      task.locked 
+                        ? "opacity-50 bg-surface-variant/30" 
+                        : task.completed 
+                          ? "bg-success/10 border-success/20" 
+                          : "hover:bg-surface-variant/50"
+                    }`}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start gap-3 flex-1">
+                          <div className="flex items-center justify-center w-6 h-6 mt-0.5">
+                            {task.locked ? (
+                              <Lock className="w-4 h-4 text-on-surface-variant" />
+                            ) : task.completed ? (
+                              <CheckCircle2 className="w-5 h-5 text-success" />
+                            ) : (
+                              <Circle className="w-5 h-5 text-on-surface-variant" />
                             )}
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-on-surface-variant">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {task.timeEstimate}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Trophy className="w-3 h-3" />
-                              {task.points} XP
-                            </span>
+                          <div className="flex-1">
+                            <h4 className={`text-sm font-medium mb-1 ${
+                              task.completed ? "line-through text-on-surface-variant" : "text-on-surface"
+                            }`}>
+                              {task.title}
+                            </h4>
+                            <div className="flex items-center gap-2 mb-2">
+                              <CategoryIcon className={`w-3 h-3 ${getCategoryColor(task.category)}`} />
+                              <Badge variant="outline" className={`text-xs border ${getDifficultyColor(task.difficulty)}`}>
+                                {task.difficulty}
+                              </Badge>
+                              {task.streak > 0 && (
+                                <Badge variant="secondary" className="text-xs gap-1">
+                                  <Star className="w-3 h-3" />
+                                  {task.streak}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-on-surface-variant">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {task.timeEstimate}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Trophy className="w-3 h-3" />
+                                {task.points} XP
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    {!task.locked && (
-                      <div className="flex gap-2">
-                        <Button 
-                          variant={task.completed ? "outline" : "default"} 
-                          size="sm" 
-                          className="flex-1"
-                          disabled={task.completed}
-                        >
-                          {task.completed ? "Completed" : "Start Task"}
-                        </Button>
-                        {!task.completed && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleScheduleReminder(task)}
-                            className="shrink-0"
+                      
+                      {!task.locked && (
+                        <div className="flex gap-2">
+                          <Button 
+                            variant={task.completed ? "outline" : "default"} 
+                            size="sm" 
+                            className="flex-1"
+                            disabled={task.completed}
                           >
-                            <Bell className="w-4 h-4" />
+                            {task.completed ? "Completed" : "Start Task"}
                           </Button>
-                        )}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
+                          {!task.completed && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleScheduleReminder(task)}
+                              className="shrink-0"
+                            >
+                              <Bell className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
           </div>
         </TabsContent>
 

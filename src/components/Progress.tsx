@@ -35,36 +35,36 @@ export function Progress() {
     {
       skill: "Grammar",
       icon: <FileText size={16} />,
-      progress: 85,
-      level: "Advanced",
-      pointsEarned: 1250,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1500,
       color: "text-primary"
     },
     {
       skill: "Reading",
       icon: <BookOpen size={16} />,
-      progress: 72,
-      level: "Intermediate",
-      pointsEarned: 980,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1350,
       color: "text-secondary"
     },
     {
       skill: "Listening",
       icon: <Headphones size={16} />,
-      progress: 68,
-      level: "Intermediate",
-      pointsEarned: 890,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1300,
       color: "text-tertiary"
     },
     {
       skill: "Vocabulary",
       icon: <Sparkles size={16} />,
-      progress: 91,
-      level: "Expert",
-      pointsEarned: 1420,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1550,
       color: "text-[hsl(263_67%_80%)]"
     }
@@ -76,8 +76,7 @@ export function Progress() {
       title: "First Steps",
       description: "Complete your first task",
       icon: <Target size={16} />,
-      earned: true,
-      date: "2024-01-15",
+      earned: false,
       tier: 'bronze',
       rarity: 'common',
       points: 50
@@ -87,8 +86,7 @@ export function Progress() {
       title: "Week Warrior",
       description: "Maintain 7-day streak",
       icon: <Trophy size={16} />,
-      earned: true,
-      date: "2024-02-03",
+      earned: false,
       tier: 'silver',
       rarity: 'rare',
       points: 150
@@ -128,8 +126,7 @@ export function Progress() {
       title: "Study Streak Champion",
       description: "Maintain 30-day study streak",
       icon: <Medal size={16} />,
-      earned: true,
-      date: "2024-01-20",
+      earned: false,
       tier: 'gold',
       rarity: 'epic',
       points: 400
@@ -210,7 +207,7 @@ export function Progress() {
             <CardContent className="p-0">
               <div className="space-y-2">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
-                  const progress = [85, 92, 78, 95, 88, 0, 0][index];
+                  const progress = 0; // Reset all progress to 0
                   return (
                     <div key={day} className="flex items-center gap-2">
                       <span className="text-xs text-card-foreground/80 w-8">{day}</span>
@@ -240,11 +237,11 @@ export function Progress() {
             </div>
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
-                <div className="text-lg font-bold text-card-foreground">12h 30m</div>
+                <div className="text-lg font-bold text-card-foreground">0h 0m</div>
                 <div className="text-xs text-card-foreground/80">Total</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-card-foreground">1h 47m</div>
+                <div className="text-lg font-bold text-card-foreground">0h 0m</div>
                 <div className="text-xs text-card-foreground/80">Daily Avg</div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Sparkles, TrendingUp, Brain } from "lucide-react";
+import { Sparkles, TrendingUp, Brain, Target } from "lucide-react";
 import { ProgressRing } from "./ProgressRing";
 import { StreakCounter } from "./StreakCounter";
 import { TaskCard } from "./TaskCard";
@@ -25,37 +25,12 @@ interface HomeProps {
 }
 
 export function Home({ onNavigateToTasks }: HomeProps) {
-  const [todayProgress, setTodayProgress] = useState(65);
-  const [streakDays, setStreakDays] = useState(12);
+  const [todayProgress, setTodayProgress] = useState(0);
+  const [streakDays, setStreakDays] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [showExamInfo, setShowExamInfo] = useState(false);
   const [examData, setExamData] = useState<ExamData | null>(null);
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      title: "Complete Grammar Practice Set",
-      skillType: "grammar",
-      points: 50,
-      estimatedTime: 15,
-      completed: false
-    },
-    {
-      id: "2", 
-      title: "Reading Comprehension - Science Articles",
-      skillType: "reading",
-      points: 75,
-      estimatedTime: 20,
-      completed: false
-    },
-    {
-      id: "3",
-      title: "Vocabulary Builder - Advanced Words",
-      skillType: "vocabulary", 
-      points: 40,
-      estimatedTime: 10,
-      completed: true
-    }
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     // Load exam data when component mounts
@@ -71,7 +46,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
   }, []);
 
   const nextExam = examData?.nextExam;
-  const examDate = nextExam ? new Date(nextExam.date) : new Date('2025-03-15');
+  const examDate = nextExam ? new Date(nextExam.date) : new Date('2025-05-18');
   const completedTasks = tasks.filter(task => task.completed);
   const todayScore = completedTasks.reduce((sum, task) => sum + task.points, 0);
   
@@ -212,8 +187,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         <p className="text-xs text-card-foreground/90 mb-2">
-          Based on your progress, focus on <strong>reading comprehension</strong> today. 
-          You're 85% ready for grammar but could improve reading speed by 15%.
+          Start your YDS preparation journey! Complete your first task to receive personalized recommendations based on your performance.
         </p>
         
         <Button 
@@ -222,7 +196,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
           className="w-full text-xs border-primary text-primary hover:bg-primary-container"
         >
           <Sparkles size={14} className="mr-1" />
-          Try Recommended Task
+          Start Your Journey
         </Button>
       </Card>
 
@@ -236,13 +210,30 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         <div className="space-y-2">
-          {tasks.slice(0, 3).map(task => (
-            <TaskCard
-              key={task.id}
-              {...task}
-              onComplete={handleTaskComplete}
-            />
-          ))}
+          {tasks.length === 0 ? (
+            <Card className="p-4 text-center">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Target size={24} className="text-primary" />
+                </div>
+                <h3 className="font-medium text-sm text-on-surface mb-1">Ready to Start?</h3>
+                <p className="text-xs text-on-surface/80 mb-3">
+                  Your daily tasks will appear here once you begin your study journey.
+                </p>
+                <Button size="sm" className="text-xs">
+                  Explore Tasks
+                </Button>
+              </div>
+            </Card>
+          ) : (
+            tasks.slice(0, 3).map(task => (
+              <TaskCard
+                key={task.id}
+                {...task}
+                onComplete={handleTaskComplete}
+              />
+            ))
+          )}
         </div>
         
         {tasks.length > 3 && (

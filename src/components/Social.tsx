@@ -28,71 +28,21 @@ import {
   Edit
 } from "lucide-react";
 
-// Mock data for demonstration
+// Empty initial data - users will create their own profiles and connect with others
 const leaderboardData = [
-  { rank: 1, name: "Alex Chen", score: 2850, streak: 25, avatar: "AC" },
-  { rank: 2, name: "Sarah Kim", score: 2720, streak: 18, avatar: "SK" },
-  { rank: 3, name: "You", score: 2650, streak: 15, avatar: "YU", isCurrentUser: true },
-  { rank: 4, name: "Mike Jones", score: 2580, streak: 12, avatar: "MJ" },
-  { rank: 5, name: "Emma Davis", score: 2450, streak: 20, avatar: "ED" },
+  { rank: 1, name: "You", score: 0, streak: 0, avatar: "YU", isCurrentUser: true },
 ];
 
 const studyGroups = [
-  {
-    id: 1,
-    name: "YDS Warriors",
-    members: 24,
-    activity: "High",
-    description: "Daily practice sessions",
-    category: "General YDS"
-  },
-  {
-    id: 2,
-    name: "Vocabulary Masters",
-    members: 18,
-    activity: "Medium",
-    description: "Focus on word building",
-    category: "Vocabulary"
-  },
-  {
-    id: 3,
-    name: "Grammar Experts",
-    members: 31,
-    activity: "High", 
-    description: "Advanced grammar practice",
-    category: "Grammar"
-  },
+  // Study groups will be populated as users create and join them
 ];
 
 const friends = [
-  { name: "Jessica Liu", status: "online", todayScore: 85, streak: 12, avatar: "JL" },
-  { name: "David Park", status: "offline", todayScore: 92, streak: 8, avatar: "DP" },
-  { name: "Lisa Wang", status: "studying", todayScore: 78, streak: 22, avatar: "LW" },
-  { name: "Tom Wilson", status: "online", todayScore: 88, streak: 5, avatar: "TW" },
+  // Friends list will be populated as users connect with each other
 ];
 
 const achievements = [
-  {
-    title: "Study Streak Master",
-    description: "Maintained 30-day streak",
-    icon: Crown,
-    rarity: "legendary",
-    unlockedBy: ["Alex Chen", "Sarah Kim"]
-  },
-  {
-    title: "Vocabulary Virtuoso", 
-    description: "Learned 1000+ words",
-    icon: BookOpen,
-    rarity: "epic",
-    unlockedBy: ["You", "Mike Jones", "Emma Davis"]
-  },
-  {
-    title: "Speed Demon",
-    description: "Completed 100 questions in 30min",
-    icon: Clock,
-    rarity: "rare", 
-    unlockedBy: ["Sarah Kim", "Lisa Wang"]
-  },
+  // Achievements will be unlocked as users progress through their studies
 ];
 
 const avatarOptions = [
@@ -108,9 +58,9 @@ const avatarOptions = [
 
 export function Social() {
   const [activeTab, setActiveTab] = useState("profile");
-  const [username, setUsername] = useState("StudyNinja42");
+  const [username, setUsername] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0]);
-  const [weeklyGoal, setWeeklyGoal] = useState([15]);
+  const [weeklyGoal, setWeeklyGoal] = useState([10]);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {

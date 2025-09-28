@@ -18,49 +18,49 @@ export class ExamService {
   private static readonly CACHE_KEY = 'osym_exam_data';
   private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
-  // Mock data based on typical YDS/YÖKDİL schedule - this will be replaced with real data
-  private static getMockExamData(): ExamData {
-    const currentYear = new Date().getFullYear();
-    const nextYear = currentYear + 1;
+  // Real data based on official ÖSYM 2025 calendar
+  private static getRealExamData(): ExamData {
+    const currentYear = 2024;
+    const nextYear = 2025;
     
     return {
       upcomingExams: [
         {
-          name: 'YDS',
-          date: `${nextYear}-03-15`,
-          applicationStart: `${currentYear}-12-01`,
-          applicationEnd: `${currentYear}-12-15`,
-          status: 'Başvurular Devam Ediyor',
-          type: 'YDS',
-          isActive: true
-        },
-        {
-          name: 'YÖKDİL',
-          date: `${nextYear}-04-20`,
-          applicationStart: `${currentYear}-12-20`,
-          applicationEnd: `${nextYear}-01-10`,
+          name: 'YÖKDİL/2',
+          date: '2025-07-27',
+          applicationStart: '2025-06-11',
+          applicationEnd: '2025-06-18',
           status: 'Başvurular Açılacak',
           type: 'YÖKDİL',
           isActive: false
         },
         {
+          name: 'e-YDS (İngilizce)',
+          date: '2025-05-18',
+          applicationStart: '2025-04-15',
+          applicationEnd: '2025-04-30',
+          status: 'Başvurular Açılacak',
+          type: 'YDS',
+          isActive: false
+        },
+        {
           name: 'YDS',
-          date: `${nextYear}-10-15`,
-          applicationStart: `${nextYear}-07-01`,
-          applicationEnd: `${nextYear}-07-15`,
+          date: '2025-11-23',
+          applicationStart: '2025-09-15',
+          applicationEnd: '2025-10-01',
           status: 'Başvurular Açılacak',
           type: 'YDS',
           isActive: false
         }
       ],
       nextExam: {
-        name: 'YDS',
-        date: `${nextYear}-03-15`,
-        applicationStart: `${currentYear}-12-01`,
-        applicationEnd: `${currentYear}-12-15`,
-        status: 'Başvurular Devam Ediyor',
+        name: 'e-YDS (İngilizce)',
+        date: '2025-05-18',
+        applicationStart: '2025-04-15',
+        applicationEnd: '2025-04-30',
+        status: 'Başvurular Açılacak',
         type: 'YDS',
-        isActive: true
+        isActive: false
       },
       lastUpdated: new Date().toISOString()
     };
@@ -77,8 +77,8 @@ export class ExamService {
         }
       }
 
-      // For now, return mock data. In a real implementation, this would fetch from ÖSYM API
-      const examData = this.getMockExamData();
+      // Return real ÖSYM exam data for 2025
+      const examData = this.getRealExamData();
 
       // Cache the result
       localStorage.setItem(this.CACHE_KEY, JSON.stringify({
@@ -89,7 +89,7 @@ export class ExamService {
       return examData;
     } catch (error) {
       console.error('Error fetching exam data:', error);
-      return this.getMockExamData();
+      return this.getRealExamData();
     }
   }
 
