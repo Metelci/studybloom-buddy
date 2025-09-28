@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { useNativeFeatures } from "@/hooks/useNativeFeatures";
 import { nativeStorage } from "@/utils/nativeStorage";
 import { toast } from "sonner";
+import { StudyPlanCreator } from "./StudyPlanCreator";
 import { 
   BookOpen,
   Brain,
@@ -88,6 +89,8 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [weeklyGoal, setWeeklyGoal] = useState([15]);
   const [savedWeeklyGoal, setSavedWeeklyGoal] = useState([15]);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showStudyPlanCreator, setShowStudyPlanCreator] = useState(false);
+  const [studyPlan, setStudyPlan] = useState(null);
   const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
 
   // Load saved weekly goal on component mount
@@ -161,6 +164,17 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
     } else {
       toast.info("Install the mobile app to receive notifications");
     }
+  };
+
+  const handleCreateStudyPlan = () => {
+    setShowStudyPlanCreator(true);
+  };
+
+  const handlePlanCreated = (newPlan: any) => {
+    setStudyPlan(newPlan);
+    // Store in native storage
+    nativeStorage.setItem('study_plan', JSON.stringify(newPlan));
+    setShowStudyPlanCreator(false);
   };
 
   return (
@@ -332,7 +346,7 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 <p className="text-sm text-on-surface-variant mb-4">
                   Your personalized daily tasks will appear here once you set up your study plan.
                 </p>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleCreateStudyPlan}>
                   Create Study Plan
                 </Button>
               </div>
@@ -652,6 +666,14 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* Study Plan Creator Modal */}
+      {showStudyPlanCreator && (
+        <StudyPlanCreator 
+          onClose={() => setShowStudyPlanCreator(false)}
+          onPlanCreated={handlePlanCreated}
+        />
+      )}
     </div>
   );
 }
