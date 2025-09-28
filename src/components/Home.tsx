@@ -6,6 +6,7 @@ import { TaskCard } from "./TaskCard";
 import { ExamCountdown } from "./ExamCountdown";
 import { WeeklyStudyPlan } from "./WeeklyStudyPlan";
 import { ExamInfo } from "./ExamInfo";
+import { ThemeToggle } from "./ThemeToggle";
 import { ExamService, type ExamData } from "@/services/examService";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -100,6 +101,10 @@ export function Home({ onNavigateToTasks }: HomeProps) {
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
       <div className="relative bg-gradient-to-br from-primary/60 via-secondary/50 to-tertiary/55 rounded-2xl p-4 mb-3 overflow-hidden">
+        {/* Theme Toggle in top right */}
+        <div className="absolute top-3 right-3 z-10">
+          <ThemeToggle />
+        </div>
         <div className="absolute top-2 right-2 w-16 h-16 bg-primary/30 rounded-full blur-xl" />
         <div className="absolute bottom-2 left-2 w-12 h-12 bg-secondary/35 rounded-full blur-xl" />
         <div className="relative text-center">
