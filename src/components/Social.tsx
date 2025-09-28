@@ -150,14 +150,6 @@ export function Social() {
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
-      {/* Privacy Warning */}
-      <Alert className="mb-4 border-primary/20 bg-primary/5">
-        <Shield className="h-4 w-4 text-primary" />
-        <AlertDescription className="text-sm text-primary">
-          <strong>Privacy First:</strong> Your real identity is never shared. Only your chosen username and avatar are visible to others.
-        </AlertDescription>
-      </Alert>
-
       {/* Header */}
       <div className="relative bg-gradient-to-r from-secondary/50 via-success/45 to-primary/55 rounded-2xl p-5 mb-4 overflow-hidden">
         <div className="absolute top-0 right-0 w-28 h-28 bg-success/35 rounded-full blur-2xl" />
