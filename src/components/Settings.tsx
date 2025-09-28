@@ -209,27 +209,11 @@ const settingsData: Record<string, SettingItem[]> = {
       icon: Brain
     },
     {
-      id: "auto_difficulty",
-      label: "Auto Difficulty Adjustment",
-      description: "Automatically adjust task difficulty",
-      type: "toggle",
-      value: true,
-      icon: Target
-    },
-    {
       id: "daily_goals",
       label: "Daily Goal Reminders",
       description: "Remind me of my daily study goals",
       type: "toggle",
       value: true,
-      icon: Calendar
-    },
-    {
-      id: "weekend_mode",
-      label: "Weekend Mode",
-      description: "Lighter study load on weekends",
-      type: "toggle",
-      value: false,
       icon: Calendar
     }
   ]
@@ -257,9 +241,7 @@ export function Settings() {
     data_analytics: true,
     progress_sharing: true,
     smart_scheduling: true,
-    auto_difficulty: true,
-    daily_goals: true,
-    weekend_mode: false
+    daily_goals: true
   });
 
   const handleToggle = (settingId: string, value: boolean) => {
