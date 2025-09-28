@@ -184,7 +184,7 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           <div className="text-right">
             <Badge className="bg-gradient-to-r from-primary to-secondary text-primary-foreground gap-1.5 px-3 py-1">
               <Zap className="w-4 h-4" />
-              1,250 XP
+              0 XP
             </Badge>
           </div>
         </div>
