@@ -79,6 +79,53 @@ const weeklyGoals = [
   // Weekly goals will be set by users based on their study preferences
 ];
 
+// Helper function to get today's day name
+const getTodayDayName = () => {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return days[new Date().getDay()];
+};
+
+// Helper function to generate daily tasks from study plan
+const generateDailyTasks = (studyPlan: any) => {
+  if (!studyPlan?.schedule) return [];
+  
+  const today = getTodayDayName();
+  const todaySchedule = studyPlan.schedule.find((day: any) => day.day === today);
+  
+  if (!todaySchedule?.sessions) return [];
+  
+  return todaySchedule.sessions.map((session: any, index: number) => ({
+    id: `session-${index}`,
+    title: session.title,
+    category: session.skill || session.type,
+    difficulty: "medium",
+    timeEstimate: `${session.duration} min`,
+    points: Math.round(session.duration / 5) * 10, // 10 points per 5 minutes
+    completed: false,
+    locked: false,
+    streak: 0,
+    source: session.source
+  }));
+};
+
+// Helper function to generate weekly goals from study plan  
+const generateWeeklyGoals = (studyPlan: any) => {
+  if (!studyPlan?.schedule) return [];
+  
+  const focusAreas = studyPlan.focusAreas || [];
+  const totalSessions = studyPlan.schedule.reduce((total: number, day: any) => 
+    total + (day.sessions?.length || 0), 0);
+  
+  return focusAreas.map((area: string, index: number) => ({
+    id: `goal-${index}`,
+    title: `${area.charAt(0).toUpperCase() + area.slice(1)} Mastery`,
+    target: Math.ceil(totalSessions / focusAreas.length),
+    current: 0,
+    progress: 0,
+    reward: `+${50 + index * 25} XP`
+  }));
+};
+
 interface TasksProps {
   initialTab?: string;
 }
@@ -93,20 +140,33 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [studyPlan, setStudyPlan] = useState(null);
   const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
 
-  // Load saved weekly goal on component mount
+  // Load saved study plan and weekly goal on component mount
   useEffect(() => {
-    const loadWeeklyGoal = async () => {
+    const loadData = async () => {
       try {
+        // Load study plan
+        const savedPlan = await nativeStorage.getItem<string>('study_plan');
+        if (savedPlan) {
+          const parsedPlan = JSON.parse(savedPlan);
+          setStudyPlan(parsedPlan);
+          // Set weekly goal based on study plan
+          if (parsedPlan.hoursPerWeek) {
+            setWeeklyGoal([parsedPlan.hoursPerWeek]);
+            setSavedWeeklyGoal([parsedPlan.hoursPerWeek]);
+          }
+        }
+        
+        // Load saved weekly goal
         const saved = await nativeStorage.getItem<number>('weeklyStudyGoal');
-        if (saved) {
+        if (saved && !savedPlan) {
           setWeeklyGoal([saved]);
           setSavedWeeklyGoal([saved]);
         }
       } catch (error) {
-        console.log('No saved weekly goal found');
+        console.log('No saved data found');
       }
     };
-    loadWeeklyGoal();
+    loadData();
   }, []);
 
   // Check for unsaved changes
@@ -150,8 +210,10 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   };
 
   const filteredTasks = selectedCategory === "all" 
-    ? dailyTasks 
-    : dailyTasks.filter(task => task.category === selectedCategory);
+    ? (studyPlan ? generateDailyTasks(studyPlan) : dailyTasks)
+    : (studyPlan ? generateDailyTasks(studyPlan) : dailyTasks).filter(task => task.category === selectedCategory);
+
+  const currentWeeklyGoals = studyPlan ? generateWeeklyGoals(studyPlan) : weeklyGoals;
 
   const handleScheduleReminder = async (task: any) => {
     if (isNative) {
@@ -174,6 +236,11 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
     setStudyPlan(newPlan);
     // Store in native storage
     nativeStorage.setItem('study_plan', JSON.stringify(newPlan));
+    // Update weekly goal to match study plan
+    if (newPlan.hoursPerWeek) {
+      setWeeklyGoal([newPlan.hoursPerWeek]);
+      setSavedWeeklyGoal([newPlan.hoursPerWeek]);
+    }
     setShowStudyPlanCreator(false);
   };
 
@@ -337,14 +404,17 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
 
           {/* Task List */}
           <div className="space-y-3">
-            {dailyTasks.length === 0 ? (
+            {filteredTasks.length === 0 ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target size={32} className="text-primary" />
                 </div>
                 <h4 className="text-base font-semibold text-on-surface mb-2">No Tasks Yet</h4>
                 <p className="text-sm text-on-surface-variant mb-4">
-                  Your personalized daily tasks will appear here once you set up your study plan.
+                  {studyPlan 
+                    ? `No sessions scheduled for ${getTodayDayName()}. Check your weekly plan or create a new one.`
+                    : "Your personalized daily tasks will appear here once you set up your study plan."
+                  }
                 </p>
                 <Button variant="outline" size="sm" onClick={handleCreateStudyPlan}>
                   Create Study Plan
@@ -435,6 +505,15 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 );
               })
             )}
+            
+            {filteredTasks.length > 3 && (
+              <Button 
+                variant="ghost" 
+                className="w-full text-primary hover:bg-primary-container"
+              >
+                View All Tasks ({filteredTasks.length - 3} more)
+              </Button>
+            )}
           </div>
         </TabsContent>
 
@@ -447,21 +526,29 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {weeklyGoals.map((goal, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium text-on-surface mb-1">{goal.title}</p>
-                      <p className="text-xs text-on-surface-variant">Reward: {goal.reward}</p>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {goal.current}/{goal.target}
-                    </Badge>
-                  </div>
-                  <Progress value={goal.progress} className="h-2" />
-                  <p className="text-xs text-on-surface-variant text-right">{goal.progress}% Complete</p>
+              {currentWeeklyGoals.length === 0 ? (
+                <div className="text-center py-6">
+                  <Calendar className="w-12 h-12 mx-auto mb-3 text-primary/50" />
+                  <h4 className="text-sm font-medium text-on-surface mb-1">No Weekly Goals</h4>
+                  <p className="text-xs text-on-surface-variant">Create a study plan to set up your weekly goals automatically.</p>
                 </div>
-              ))}
+              ) : (
+                currentWeeklyGoals.map((goal, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-sm font-medium text-on-surface mb-1">{goal.title}</p>
+                        <p className="text-xs text-on-surface-variant">Reward: {goal.reward}</p>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {goal.current}/{goal.target}
+                      </Badge>
+                    </div>
+                    <Progress value={goal.progress} className="h-2" />
+                    <p className="text-xs text-on-surface-variant text-right">{goal.progress}% Complete</p>
+                  </div>
+                ))
+              )}
             </CardContent>
           </Card>
 
