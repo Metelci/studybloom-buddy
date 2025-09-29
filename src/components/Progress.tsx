@@ -485,11 +485,11 @@ export function Progress() {
                 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">87%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Avg Score</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">42</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Tasks Done</div>
                   </div>
                 </div>
@@ -497,30 +497,30 @@ export function Progress() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Grammar</span>
-                    <span className="font-medium text-card-foreground">+12%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={85} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                   
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Reading</span>
-                    <span className="font-medium text-card-foreground">+8%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={78} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                   
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Listening</span>
-                    <span className="font-medium text-card-foreground">+15%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={92} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                 </div>
               </Card>
 
-              <Card className="p-3 bg-success-container">
+              <Card className="p-3 bg-surface-variant">
                 <div className="flex items-center gap-2">
-                  <TrendingUp size={14} className="text-success-container-foreground" />
+                  <Calendar size={14} className="text-on-surface-variant" />
                   <div>
-                    <h4 className="font-medium text-sm text-success-container-foreground">Weekly Streak</h4>
-                    <p className="text-xs text-success-container-foreground/80">You're on fire! 7 days in a row</p>
+                    <h4 className="font-medium text-sm text-on-surface">Start Your Journey</h4>
+                    <p className="text-xs text-on-surface-variant">Complete tasks to see your weekly analytics</p>
                   </div>
                 </div>
               </Card>
@@ -537,15 +537,15 @@ export function Progress() {
                 
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">84%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Avg Score</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">156</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Tasks</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-tertiary">28h</div>
+                    <div className="text-lg font-bold text-tertiary">0h</div>
                     <div className="text-xs text-card-foreground/80">Study Time</div>
                   </div>
                 </div>
@@ -553,7 +553,7 @@ export function Progress() {
                 <div className="space-y-2">
                   <h4 className="font-medium text-xs text-card-foreground">Monthly Progress</h4>
                   {['Week 1', 'Week 2', 'Week 3', 'Week 4'].map((week, index) => {
-                    const progress = [72, 81, 89, 94][index];
+                    const progress = 0;
                     return (
                       <div key={week} className="flex items-center gap-2">
                         <span className="text-xs text-card-foreground/80 w-12">{week}</span>
@@ -569,12 +569,12 @@ export function Progress() {
                 </div>
               </Card>
 
-              <Card className="p-3 bg-primary-container">
+              <Card className="p-3 bg-surface-variant">
                 <div className="flex items-center gap-2">
-                  <Award size={14} className="text-primary-container-foreground" />
+                  <BarChart3 size={14} className="text-on-surface-variant" />
                   <div>
-                    <h4 className="font-medium text-sm text-primary-container-foreground">Best Month Ever!</h4>
-                    <p className="text-xs text-primary-container-foreground/80">18% improvement from last month</p>
+                    <h4 className="font-medium text-sm text-on-surface">Build Your Stats</h4>
+                    <p className="text-xs text-on-surface-variant">Complete tasks consistently to see monthly trends</p>
                   </div>
                 </div>
               </Card>
@@ -591,11 +591,11 @@ export function Progress() {
                 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">82%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Overall Avg</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">847</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Total Tasks</div>
                   </div>
                 </div>
@@ -604,19 +604,19 @@ export function Progress() {
                   <h4 className="font-medium text-xs text-card-foreground">Learning Journey</h4>
                   <div className="grid grid-cols-4 gap-1 text-center">
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">156h</div>
+                      <div className="text-sm font-bold text-card-foreground">0h</div>
                       <div className="text-xs text-card-foreground/80">Study</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">23</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Streaks</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">89</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Days</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">12</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Levels</div>
                     </div>
                   </div>
@@ -625,8 +625,8 @@ export function Progress() {
                 <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-2 rounded-lg">
                   <div className="text-xs text-card-foreground/80 mb-1">Progress Milestones</div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs text-card-foreground">Started: Jan 15</span>
-                    <span className="text-xs font-medium text-primary">89 days ago</span>
+                    <span className="text-xs text-card-foreground">Ready to start your journey</span>
+                    <span className="text-xs font-medium text-primary">Day 0</span>
                   </div>
                 </div>
               </Card>
@@ -642,40 +642,23 @@ export function Progress() {
                 </div>
                 
                 <div className="space-y-3">
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Strength Areas</h4>
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Grammar Rules</span>
-                        <Badge className="bg-success text-success-foreground text-xs">Strong</Badge>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Vocabulary</span>
-                        <Badge className="bg-success text-success-foreground text-xs">Excellent</Badge>
-                      </div>
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <BarChart3 size={24} className="text-primary" />
                     </div>
+                    <h4 className="text-sm font-medium text-card-foreground mb-1">No Performance Data Yet</h4>
+                    <p className="text-xs text-card-foreground/70 mb-4">
+                      Complete tasks and assessments to unlock detailed performance analysis and personalized insights.
+                    </p>
                   </div>
 
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Areas to Improve</h4>
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Reading Speed</span>
-                        <Badge variant="destructive" className="text-xs">Focus</Badge>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Complex Grammar</span>
-                        <Badge className="bg-warning text-warning-foreground text-xs">Practice</Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Peak Performance Times</h4>
-                    <div className="text-xs text-card-foreground/80">
-                      <div>• Best: 2-4 PM (94% avg score)</div>
-                      <div>• Good: 10-12 AM (88% avg score)</div>
-                      <div>• Avoid: 6-8 PM (72% avg score)</div>
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-xs text-card-foreground">What you'll see:</h4>
+                    <div className="space-y-1 text-xs text-card-foreground/80">
+                      <div>• Strength and weakness analysis</div>
+                      <div>• Optimal study time recommendations</div>
+                      <div>• Skill progression tracking</div>
+                      <div>• Performance trends over time</div>
                     </div>
                   </div>
                 </div>
@@ -691,46 +674,34 @@ export function Progress() {
                   <h3 className="font-medium text-sm text-card-foreground">AI Insights & Patterns</h3>
                 </div>
                 
-                <div className="space-y-3">
-                  <Card className="p-2 bg-primary-container/50">
-                    <div className="flex items-start gap-2">
-                      <Eye size={12} className="text-primary-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-primary-container-foreground">Learning Pattern Detected</h4>
-                        <p className="text-xs text-primary-container-foreground/80">You perform 23% better on grammar tasks after vocabulary practice sessions.</p>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Brain size={32} className="text-primary" />
+                  </div>
+                  <h4 className="text-base font-semibold text-card-foreground mb-2">AI Analysis Coming Soon</h4>
+                  <p className="text-sm text-card-foreground/70 mb-6">
+                    Once you start completing tasks, our AI will analyze your learning patterns and provide personalized insights to optimize your study strategy.
+                  </p>
+                  
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-xs text-card-foreground">What AI will discover:</h4>
+                    <div className="space-y-2 text-xs text-card-foreground/80">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span>Your optimal learning times and patterns</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <Card className="p-2 bg-secondary-container/50">
-                    <div className="flex items-start gap-2">
-                      <TrendingUp size={12} className="text-secondary-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-secondary-container-foreground">Progress Acceleration</h4>
-                        <p className="text-xs text-secondary-container-foreground/80">Your learning curve shows exponential improvement. Keep the current pace!</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                        <span>Skill connections and learning accelerators</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <Card className="p-2 bg-warning-container/50">
-                    <div className="flex items-start gap-2">
-                      <AlertCircle size={12} className="text-warning-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-warning-container-foreground">Optimization Tip</h4>
-                        <p className="text-xs text-warning-container-foreground/80">Consider 15-minute breaks between reading sessions for 18% better retention.</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-tertiary rounded-full"></div>
+                        <span>Personalized study recommendations</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <div className="mt-3">
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Predicted Exam Readiness</h4>
-                    <div className="bg-success-container/30 p-2 rounded-lg">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-success-container-foreground">Current Trajectory</span>
-                        <span className="font-bold text-sm text-success-container-foreground">89%</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span>Exam readiness predictions</span>
                       </div>
-                      <ProgressBar value={89} className="h-1.5 mb-1" />
-                      <p className="text-xs text-success-container-foreground/80">Ready for exam in ~3 weeks at current pace</p>
                     </div>
                   </div>
                 </div>
