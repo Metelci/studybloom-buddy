@@ -1,448 +1,313 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  Trophy, 
-  Users, 
-  UserPlus, 
-  Crown, 
-  Medal, 
-  Star,
-  Target,
-  Clock,
-  BookOpen,
-  TrendingUp,
-  MessageCircle,
-  Share2,
-  Shield,
-  User,
-  Settings,
-  Camera,
-  Edit
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Users, UserPlus, Trophy, Star, Flame, Award, Target,
+  Settings, Crown, Medal, CheckCircle, XCircle, Camera, LogOut,
+  TrendingUp, Search
 } from "lucide-react";
-
-// Empty initial data - users will create their own profiles and connect with others
-const leaderboardData = [
-  { rank: 1, name: "You", score: 0, streak: 0, avatar: "YU", isCurrentUser: true },
-];
-
-const studyGroups = [
-  // Study groups will be populated as users create and join them
-];
-
-const friends = [
-  // Friends list will be populated as users connect with each other
-];
-
-const achievements = [
-  // Achievements will be unlocked as users progress through their studies
-];
+import { useSocialData } from "@/hooks/useSocialData";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const avatarOptions = [
-  { id: 1, emoji: "🎯", color: "bg-red-100" },
-  { id: 2, emoji: "🚀", color: "bg-blue-100" },
-  { id: 3, emoji: "⭐", color: "bg-yellow-100" },
-  { id: 4, emoji: "🔥", color: "bg-orange-100" },
-  { id: 5, emoji: "💎", color: "bg-cyan-100" },
-  { id: 6, emoji: "🏆", color: "bg-amber-100" },
-  { id: 7, emoji: "🎨", color: "bg-purple-100" },
-  { id: 8, emoji: "🌟", color: "bg-pink-100" },
+  { id: '1', emoji: '😊', bg: 'bg-blue-100' },
+  { id: '2', emoji: '🎓', bg: 'bg-green-100' },
+  { id: '3', emoji: '📚', bg: 'bg-purple-100' },
+  { id: '4', emoji: '⭐', bg: 'bg-yellow-100' },
+  { id: '5', emoji: '🚀', bg: 'bg-red-100' },
+  { id: '6', emoji: '🏆', bg: 'bg-orange-100' },
 ];
 
 export function Social() {
+  const { user, signOut } = useAuth();
+  const { 
+    profile, 
+    friends, 
+    friendRequests, 
+    achievements, 
+    progress, 
+    loading,
+    updateProfile,
+    acceptFriendRequest 
+  } = useSocialData();
+  const { toast } = useToast();
+  
   const [activeTab, setActiveTab] = useState("profile");
   const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [bio, setBio] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0]);
-  const [weeklyGoal, setWeeklyGoal] = useState([10]);
+  const [showProgress, setShowProgress] = useState(true);
+  const [showStreaks, setShowStreaks] = useState(true);
+  const [privacyLevel, setPrivacyLevel] = useState<'public' | 'friends' | 'private'>('friends');
+  const [searchUsername, setSearchUsername] = useState("");
 
-  const getRankIcon = (rank: number) => {
-    switch (rank) {
-      case 1: return <Crown className="w-4 h-4 text-yellow-500" />;
-      case 2: return <Medal className="w-4 h-4 text-gray-400" />;
-      case 3: return <Medal className="w-4 h-4 text-amber-600" />;
-      default: return <span className="text-xs font-medium text-on-surface-variant">#{rank}</span>;
+  useEffect(() => {
+    if (profile) {
+      setUsername(profile.username || "");
+      setDisplayName(profile.display_name || "");
+      setBio(profile.bio || "");
+      setShowProgress(profile.show_progress);
+      setShowStreaks(profile.show_streaks);
+      setPrivacyLevel(profile.privacy_level);
     }
+  }, [profile]);
+
+  const handleSaveProfile = async () => {
+    await updateProfile({
+      username,
+      display_name: displayName,
+      bio,
+      show_progress: showProgress,
+      show_streaks: showStreaks,
+      privacy_level: privacyLevel,
+    });
   };
 
-  const getActivityColor = (activity: string) => {
-    switch (activity) {
-      case "High": return "bg-success text-on-success";
-      case "Medium": return "bg-warning text-on-warning";
-      case "Low": return "bg-error text-on-error";
-      default: return "bg-surface-variant text-on-surface-variant";
-    }
-  };
+  const currentStreak = progress[0]?.streak_days || 0;
+  const totalPoints = progress.reduce((sum, p) => sum + (p.points_earned || 0), 0);
+  const totalTasks = progress.reduce((sum, p) => sum + (p.tasks_completed || 0), 0);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "online": return "bg-success";
-      case "studying": return "bg-primary";
-      case "offline": return "bg-surface-variant";
-      default: return "bg-surface-variant";
-    }
-  };
-
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "legendary": return "border-yellow-500 bg-yellow-500/10";
-      case "epic": return "border-purple-500 bg-purple-500/10";
-      case "rare": return "border-blue-500 bg-blue-500/10";
-      default: return "border-outline-variant bg-surface-variant";
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading social features...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
-      {/* Header */}
-      <div className="relative bg-gradient-to-r from-secondary/50 via-success/45 to-primary/55 rounded-2xl p-5 mb-4 overflow-hidden">
-        <div className="absolute top-0 right-0 w-28 h-28 bg-success/35 rounded-full blur-2xl" />
-        <div className="absolute bottom-0 left-0 w-20 h-20 bg-secondary/40 rounded-full blur-xl" />
-        <div className="relative flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Users className="w-5 h-5 text-success" />
-              <h1 className="text-xl font-bold text-slate-900 drop-shadow-md" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
-                Social Hub
-              </h1>
-            </div>
-            <p className="text-xs text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
-              Connect with fellow YDS students
-            </p>
-          </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="gap-1.5 bg-gradient-to-r from-success/10 to-secondary/10 border-success/20 hover:border-success/30 transition-all"
-          >
-            <UserPlus className="w-4 h-4" />
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Social Hub</h1>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={signOut}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+          <Button variant="outline" size="sm">
+            <UserPlus className="h-4 w-4 mr-2" />
             Invite
           </Button>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 mb-4 text-xs">
-          <TabsTrigger value="profile" className="text-[10px]">Profile</TabsTrigger>
-          <TabsTrigger value="leaderboard" className="text-[10px]">Ranks</TabsTrigger>
-          <TabsTrigger value="groups" className="text-[10px]">Groups</TabsTrigger>
-          <TabsTrigger value="friends" className="text-[10px]">Friends</TabsTrigger>
-          <TabsTrigger value="achievements" className="text-[10px]">Awards</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="friends">Friends</TabsTrigger>
+          <TabsTrigger value="leaderboard">Ranks</TabsTrigger>
+          <TabsTrigger value="achievements">Awards</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="profile" className="space-y-4 mt-0">
-          {/* Profile Setup Card */}
-          <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <User className="w-5 h-5 text-primary" />
-                Your Profile
+        <TabsContent value="profile" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="h-5 w-5" />
+                Profile Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Choose a unique username"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="displayName">Display Name</Label>
+                <Input
+                  id="displayName"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="Your display name"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <Label>Privacy Settings</Label>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-sm font-medium">Show Progress</Label>
+                      <p className="text-sm text-muted-foreground">Allow friends to see your study progress</p>
+                    </div>
+                    <Switch checked={showProgress} onCheckedChange={setShowProgress} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-sm font-medium">Show Streaks</Label>
+                      <p className="text-sm text-muted-foreground">Display your study streaks publicly</p>
+                    </div>
+                    <Switch checked={showStreaks} onCheckedChange={setShowStreaks} />
+                  </div>
+                </div>
+              </div>
+
+              <Button className="w-full" onClick={handleSaveProfile}>
+                Save Changes
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Stats</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{currentStreak}</div>
+                  <div className="text-sm text-muted-foreground">Day Streak</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{totalPoints}</div>
+                  <div className="text-sm text-muted-foreground">Total Points</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{totalTasks}</div>
+                  <div className="text-sm text-muted-foreground">Tasks Done</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="friends" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Friends ({friends.length})
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Username Section */}
-              <div className="space-y-2">
-                <Label htmlFor="username" className="text-sm font-medium text-on-surface">
-                  Username
-                </Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your username"
-                    className="flex-1"
-                    maxLength={20}
-                  />
-                  <Button variant="outline" size="sm">
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                </div>
-                <p className="text-xs text-on-surface-variant">
-                  This is how others will see you (3-20 characters)
-                </p>
-              </div>
-
-              {/* Avatar Selection */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium text-on-surface">
-                  Choose Your Avatar
-                </Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {avatarOptions.map((avatar) => (
-                    <button
-                      key={avatar.id}
-                      onClick={() => setSelectedAvatar(avatar)}
-                      className={`relative p-3 rounded-lg border-2 transition-all ${
-                        selectedAvatar.id === avatar.id
-                          ? "border-primary bg-primary/10"
-                          : "border-outline-variant hover:border-outline bg-surface-variant/50"
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${avatar.color}`}>
-                        <span className="text-lg">{avatar.emoji}</span>
-                      </div>
-                      {selectedAvatar.id === avatar.id && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-xs text-primary-foreground">✓</span>
+              {friendRequests.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-semibold">Friend Requests</h3>
+                  {friendRequests.map((request) => (
+                    <div key={request.id} className="flex items-center justify-between p-4 rounded-lg border bg-accent/20">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback>?</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">Friend Request</p>
+                          <p className="text-sm text-muted-foreground">Wants to be friends</p>
                         </div>
-                      )}
-                    </button>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={() => acceptFriendRequest(request.id)}>
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          Accept
+                        </Button>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <Button variant="outline" size="sm" className="w-full gap-2">
-                  <Camera className="w-4 h-4" />
-                  Upload Custom Avatar
-                </Button>
-              </div>
+              )}
 
-              {/* Profile Preview */}
-              <div className="bg-surface-container p-3 rounded-lg">
-                <p className="text-xs text-on-surface-variant mb-2">Preview:</p>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${selectedAvatar.color}`}>
-                    <span className="text-lg">{selectedAvatar.emoji}</span>
+              <div className="space-y-3">
+                {friends.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground mb-2">No friends yet</p>
+                    <p className="text-sm text-muted-foreground">Start learning to connect with others!</p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-on-surface">{username}</p>
-                    <p className="text-xs text-on-surface-variant">Study Level: Intermediate</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-
-          {/* Privacy & Settings */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Settings className="w-5 h-5 text-on-surface" />
-                Privacy & Settings
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex justify-between items-center py-2">
-                <div>
-                  <p className="text-sm font-medium text-on-surface">Profile Visibility</p>
-                  <p className="text-xs text-on-surface-variant">Who can see your profile</p>
-                </div>
-                <Badge variant="secondary" className="text-xs">Friends Only</Badge>
-              </div>
-              
-              <div className="flex justify-between items-center py-2">
-                <div>
-                  <p className="text-sm font-medium text-on-surface">Study Stats</p>
-                  <p className="text-xs text-on-surface-variant">Share progress with friends</p>
-                </div>
-                <Badge className="bg-success text-success-foreground text-xs">Enabled</Badge>
-              </div>
-              
-              <div className="flex justify-between items-center py-2">
-                <div>
-                  <p className="text-sm font-medium text-on-surface">Leaderboard</p>
-                  <p className="text-xs text-on-surface-variant">Appear in rankings</p>
-                </div>
-                <Badge className="bg-success text-success-foreground text-xs">Enabled</Badge>
+                ) : (
+                  friends.map((friendship) => (
+                    <div key={friendship.id} className="flex items-center justify-between p-4 rounded-lg border">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-12 w-12">
+                          <AvatarFallback>F</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">Study Friend</p>
+                          <Badge variant="outline" className="text-xs">Friend</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="leaderboard" className="space-y-3 mt-0">
-          <Card className="bg-gradient-to-r from-primary/10 to-secondary/10">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-primary" />
+        <TabsContent value="leaderboard" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="h-5 w-5" />
                 Weekly Leaderboard
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              {leaderboardData.map((user) => (
-                <div
-                  key={user.rank}
-                  className={`flex items-center justify-between p-2 rounded-lg transition-colors ${
-                    user.isCurrentUser 
-                      ? "bg-primary/20 border border-primary/30" 
-                      : "bg-surface hover:bg-surface-variant/50"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 flex justify-center">
-                      {getRankIcon(user.rank)}
-                    </div>
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback className="text-xs">{user.avatar}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className={`text-sm font-medium ${user.isCurrentUser ? "text-primary" : "text-on-surface"}`}>
-                        {user.name}
-                      </p>
-                      <p className="text-xs text-on-surface-variant">
-                        {user.streak} day streak
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-on-surface">{user.score}</p>
-                    <p className="text-xs text-on-surface-variant">points</p>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          <div className="grid grid-cols-3 gap-2">
-            <Card className="text-center">
-              <CardContent className="p-3">
-                <TrendingUp className="w-6 h-6 mx-auto mb-1 text-primary" />
-                <p className="text-lg font-bold text-on-surface">-</p>
-                <p className="text-xs text-on-surface-variant">Your Rank</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="p-3">
-                <Target className="w-6 h-6 mx-auto mb-1 text-success" />
-                <p className="text-lg font-bold text-on-surface">0</p>
-                <p className="text-xs text-on-surface-variant">Your Score</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="p-3">
-                <Star className="w-6 h-6 mx-auto mb-1 text-warning" />
-                <p className="text-lg font-bold text-on-surface">0</p>
-                <p className="text-xs text-on-surface-variant">Day Streak</p>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="groups" className="space-y-3 mt-0">
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm font-semibold text-on-surface">Study Groups</h3>
-            <Button variant="outline" size="sm" className="gap-1.5">
-              <Users className="w-4 h-4" />
-              Create Group
-            </Button>
-          </div>
-          
-          {studyGroups.map((group) => (
-            <Card key={group.id} className="hover:bg-surface-variant/50 transition-colors">
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex-1">
-                    <h4 className="text-sm font-semibold text-on-surface mb-1">{group.name}</h4>
-                    <p className="text-xs text-on-surface-variant mb-2">{group.description}</p>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">
-                        {group.category}
-                      </Badge>
-                      <Badge className={`text-xs ${getActivityColor(group.activity)}`}>
-                        {group.activity} Activity
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-on-surface">{group.members}</p>
-                    <p className="text-xs text-on-surface-variant">members</p>
-                  </div>
-                </div>
-                <div className="flex gap-2 pt-2">
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <MessageCircle className="w-4 h-4 mr-1" />
-                    Join
-                  </Button>
-                  <Button variant="ghost" size="sm">
-                    <Share2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-
-        <TabsContent value="friends" className="space-y-3 mt-0">
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm font-semibold text-on-surface">Study Buddies</h3>
-            <Button variant="outline" size="sm" className="gap-1.5">
-              <UserPlus className="w-4 h-4" />
-              Add Friend
-            </Button>
-          </div>
-          
-          {friends.map((friend, index) => (
-            <Card key={index} className="hover:bg-surface-variant/50 transition-colors">
-              <CardContent className="p-3">
+            <CardContent>
+              <div className="bg-primary/10 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <Avatar className="w-10 h-10">
-                        <AvatarFallback className="text-xs">{friend.avatar}</AvatarFallback>
-                      </Avatar>
-                      <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${getStatusColor(friend.status)}`} />
-                    </div>
+                    <span className="text-2xl font-bold">#{friends.length + 1}</span>
                     <div>
-                      <p className="text-sm font-medium text-on-surface">{friend.name}</p>
-                      <p className="text-xs text-on-surface-variant capitalize">{friend.status}</p>
+                      <p className="font-semibold">Your Rank</p>
+                      <p className="text-sm text-muted-foreground">{totalPoints} points • {currentStreak}-day streak</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-on-surface">{friend.todayScore}%</p>
-                    <p className="text-xs text-on-surface-variant">{friend.streak} streak</p>
-                  </div>
+                  <Badge variant="secondary">Keep studying!</Badge>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        <TabsContent value="achievements" className="space-y-3 mt-0">
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm font-semibold text-on-surface">Community Achievements</h3>
-          </div>
-          
-          {achievements.map((achievement, index) => {
-            const Icon = achievement.icon;
-            return (
-              <Card key={index} className={`border-2 ${getRarityColor(achievement.rarity)}`}>
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-surface rounded-lg">
-                      <Icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-on-surface">{achievement.title}</h4>
-                        <Badge variant="outline" className="text-xs capitalize">
-                          {achievement.rarity}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-on-surface-variant mb-2">{achievement.description}</p>
-                      <div className="flex items-center gap-1">
-                        <p className="text-xs text-on-surface-variant">Unlocked by:</p>
-                        <div className="flex gap-1">
-                          {achievement.unlockedBy.slice(0, 3).map((name, i) => (
-                            <Badge key={i} variant="secondary" className="text-xs">
-                              {name}
-                            </Badge>
-                          ))}
-                          {achievement.unlockedBy.length > 3 && (
-                            <span className="text-xs text-on-surface-variant">+{achievement.unlockedBy.length - 3}</span>
-                          )}
+        <TabsContent value="achievements" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Award className="h-5 w-5" />
+                Your Achievements ({achievements.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {achievements.length === 0 ? (
+                <div className="text-center py-8">
+                  <Award className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">No achievements yet</p>
+                  <p className="text-sm text-muted-foreground">Complete tasks to earn your first achievement!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {achievements.map((userAchievement) => (
+                    <div key={userAchievement.id} className="p-4 rounded-lg border">
+                      <div className="flex items-start gap-3">
+                        <div className="text-3xl">{userAchievement.achievement.icon}</div>
+                        <div>
+                          <h3 className="font-semibold">{userAchievement.achievement.name}</h3>
+                          <p className="text-sm text-muted-foreground">{userAchievement.achievement.description}</p>
+                          <Badge variant="default" className="mt-2">Unlocked</Badge>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

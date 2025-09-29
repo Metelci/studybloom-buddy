@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,12 +13,15 @@ import { Tasks } from "@/components/Tasks";
 import { Settings } from "@/components/Settings";
 import { useNativeFeatures } from "@/hooks/useNativeFeatures";
 import { initDatabase } from "@/db/sqlite";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import Auth from "@/pages/Auth";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+function AppContent() {
   const [activeTab, setActiveTab] = useState("home");
   const [tasksSubTab, setTasksSubTab] = useState("daily");
+  const { user, loading } = useAuth();
   
   // Initialize native features
   const nativeFeatures = useNativeFeatures();
@@ -51,21 +55,49 @@ const App = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <main className="min-h-screen">
+        {renderActiveScreen()}
+      </main>
+      <Navigation 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+      />
+    </div>
+  );
+}
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <div className="min-h-screen bg-background">
-            <main className="min-h-screen">
-              {renderActiveScreen()}
-            </main>
-            <Navigation 
-              activeTab={activeTab} 
-              onTabChange={setActiveTab} 
-            />
-          </div>
+          <Router>
+            <AuthProvider>
+              <Routes>
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/*" element={<AppContent />} />
+              </Routes>
+            </AuthProvider>
+          </Router>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
