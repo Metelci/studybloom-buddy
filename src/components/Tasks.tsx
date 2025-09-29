@@ -484,140 +484,95 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
         </TabsContent>
 
         <TabsContent value="plan" className="space-y-4 mt-0">
-          {/* Current Week's Detailed Plan */}
-          <Card className="bg-plan-container">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2 text-plan-container-foreground">
-                <Calendar className="w-4 h-4 text-primary" />
-                This Week's Study Plan
-              </CardTitle>
-              <p className="text-xs text-plan-container-foreground/70 mt-1">Reading Comprehension Focus</p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Week Progress */}
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-plan-container-foreground">Week Progress</span>
-                  <span className="text-plan-container-foreground/70">65%</span>
-                </div>
-                <Progress value={65} className="h-2" />
-              </div>
-
-              {/* Daily Schedule */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-plan-container-foreground">Daily Schedule</h4>
-                
-                {/* Monday */}
-                <div className="border rounded-lg p-3 bg-success/5 border-success/20">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-plan-container-foreground">Monday, Dec 16</h5>
-                      <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
-                    </div>
-                    <span className="text-xs text-plan-container-foreground/70">100%</span>
-                  </div>
-                  <p className="text-xs text-plan-container-foreground/70 mb-2">Foundation building with vocabulary</p>
+          {studyPlan ? (
+            <>
+              {/* Display the created study plan */}
+              <Card className="bg-plan-container">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2 text-plan-container-foreground">
+                    <Calendar className="w-4 h-4 text-primary" />
+                    This Week's Study Plan
+                  </CardTitle>
+                  <p className="text-xs text-plan-container-foreground/70 mt-1">{studyPlan.focus}</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Week Progress */}
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-xs">
-                      <CheckCircle2 className="w-3 h-3 text-success" />
-                      <BookOpen className="w-3 h-3 text-blue-500" />
-                      <span className="flex-1 line-through text-plan-container-foreground/60">Advanced Vocabulary Set A</span>
-                      <span className="text-plan-container-foreground/70">09:00-09:30</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-plan-container-foreground">Week Progress</span>
+                      <span className="text-plan-container-foreground/70">0%</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs">
-                      <CheckCircle2 className="w-3 h-3 text-success" />
-                      <PenTool className="w-3 h-3 text-green-500" />
-                      <span className="flex-1 line-through text-plan-container-foreground/60">Grammar Review: Conditionals</span>
-                      <span className="text-plan-container-foreground/70">14:00-14:45</span>
-                    </div>
+                    <Progress value={0} className="h-2" />
                   </div>
-                </div>
 
-                {/* Tuesday */}
-                <div className="border rounded-lg p-3 bg-success/5 border-success/20">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-plan-container-foreground">Tuesday, Dec 17</h5>
-                      <Badge variant="secondary" className="text-xs bg-success/20 text-success">Completed</Badge>
-                    </div>
-                    <span className="text-xs text-plan-container-foreground/70">100%</span>
-                  </div>
-                  <p className="text-xs text-plan-container-foreground/70 mb-2">Reading speed improvement</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-xs">
-                      <CheckCircle2 className="w-3 h-3 text-success" />
-                      <Brain className="w-3 h-3 text-purple-500" />
-                      <span className="flex-1 line-through text-plan-container-foreground/60">Speed Reading Practice</span>
-                      <span className="text-plan-container-foreground/70">10:00-11:00</span>
+                  {/* Weekly Schedule */}
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-medium text-plan-container-foreground">Weekly Schedule</h4>
+                    <div className="space-y-2 text-xs text-plan-container-foreground/70">
+                      {studyPlan.schedule?.map((day: any, index: number) => (
+                        <div key={index} className="p-2 bg-surface-variant/20 rounded">
+                          <strong>{day.day}:</strong> {day.activities.join(', ')}
+                        </div>
+                      ))}
+                      <div className="mt-3 p-3 bg-primary/10 rounded-lg">
+                        <p className="text-xs text-plan-container-foreground/80">
+                          <strong>Recommended Book:</strong> {studyPlan.recommendedBook}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </CardContent>
+              </Card>
 
-                {/* Wednesday - Today */}
-                <div className="border rounded-lg p-3 bg-primary-container/20 border-primary/30">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <h5 className="text-sm font-medium text-plan-container-foreground">Wednesday, Dec 18 (Today)</h5>
-                      <Badge variant="outline" className="text-xs">In Progress</Badge>
-                    </div>
-                    <span className="text-xs text-plan-container-foreground/70">70%</span>
+              {/* Plan Management */}
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Plan Management</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" className="h-16 flex-col gap-1">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      <span className="text-xs">Modify<br/>This Week</span>
+                    </Button>
+                    <Button variant="outline" className="h-16 flex-col gap-1" onClick={handleCreateStudyPlan}>
+                      <Target className="w-4 h-4 text-secondary" />
+                      <span className="text-xs">Create New<br/>Plan</span>
+                    </Button>
                   </div>
-                  <p className="text-xs text-plan-container-foreground/70 mb-2">Comprehensive practice day</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-xs">
-                      <CheckCircle2 className="w-3 h-3 text-success" />
-                      <Brain className="w-3 h-3 text-purple-500" />
-                      <span className="flex-1 line-through text-plan-container-foreground/60">Reading Comprehension</span>
-                      <span className="text-plan-container-foreground/70">09:30-10:30</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs">
-                      <Circle className="w-3 h-3 text-on-surface-variant" />
-                      <Headphones className="w-3 h-3 text-orange-500" />
-                      <span className="flex-1 text-plan-container-foreground">Listening Practice</span>
-                      <span className="text-plan-container-foreground/70">15:00-15:40</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Thursday - Friday - Weekend Preview */}
-                <div className="border rounded-lg p-3 bg-surface-variant/20">
-                  <div className="flex items-center justify-between mb-2">
-                    <h5 className="text-sm font-medium text-plan-container-foreground">Upcoming Days</h5>
-                    <Badge variant="outline" className="text-xs">Planned</Badge>
-                  </div>
-                  <div className="space-y-1 text-xs text-plan-container-foreground/70">
-                    <div>Thu: Grammar deep dive + Vocabulary expansion</div>
-                    <div>Fri: Mixed practice + Mock test preparation</div>
-                    <div>Weekend: Review week + Prep next week's plan</div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Plan Management */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Plan Management</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-16 flex-col gap-1">
+                  
+                  <Button variant="ghost" className="w-full justify-start gap-3">
+                    <TrendingUp className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">View Planning Analytics</span>
+                  </Button>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            /* Empty state - no plan created yet */
+            <Card className="bg-plan-container">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2 text-plan-container-foreground">
                   <Calendar className="w-4 h-4 text-primary" />
-                  <span className="text-xs">Modify<br/>This Week</span>
-                </Button>
-                <Button variant="outline" className="h-16 flex-col gap-1">
-                  <Target className="w-4 h-4 text-secondary" />
-                  <span className="text-xs">Generate<br/>Next Week</span>
-                </Button>
-              </div>
-              
-              <Button variant="ghost" className="w-full justify-start gap-3">
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="text-sm">View Planning Analytics</span>
-              </Button>
-            </CardContent>
-          </Card>
+                  Study Plan
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calendar size={32} className="text-primary" />
+                  </div>
+                  <h4 className="text-base font-semibold text-plan-container-foreground mb-2">No Study Plan Yet</h4>
+                  <p className="text-sm text-plan-container-foreground/70 mb-6">
+                    Create a personalized weekly study plan based on your time commitment and learning goals. Get recommendations from Raymond Murphy's grammar books.
+                  </p>
+                  <Button onClick={handleCreateStudyPlan} className="w-full">
+                    Create Study Plan
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="custom" className="space-y-4 mt-0">
