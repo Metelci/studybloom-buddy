@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +10,7 @@ import { Social } from "@/components/Social";
 import { Tasks } from "@/components/Tasks";
 import { Settings } from "@/components/Settings";
 import { useNativeFeatures } from "@/hooks/useNativeFeatures";
+import { initDatabase } from "@/db/sqlite";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,11 @@ const App = () => {
   
   // Initialize native features
   const nativeFeatures = useNativeFeatures();
+
+  useEffect(() => {
+    // Initialize SQLite database on native platforms
+    initDatabase().catch((e) => console.error('SQLite init error', e));
+  }, []);
 
   const navigateToTasks = (subTab?: string) => {
     setActiveTab("tasks");

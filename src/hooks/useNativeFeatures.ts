@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Preferences } from '@capacitor/preferences';
 
@@ -10,47 +9,15 @@ export const useNativeFeatures = () => {
 
   useEffect(() => {
     setIsNative(Capacitor.isNativePlatform());
-    
     if (Capacitor.isNativePlatform()) {
-      initializeNotifications();
+      initializeLocalNotifications();
     }
   }, []);
 
-  const initializeNotifications = async () => {
+  const initializeLocalNotifications = async () => {
     try {
-      // Request permission for push notifications
-      let permStatus = await PushNotifications.checkPermissions();
-      
-      if (permStatus.receive === 'prompt') {
-        permStatus = await PushNotifications.requestPermissions();
-      }
-      
-      if (permStatus.receive !== 'granted') {
-        throw new Error('User denied permissions!');
-      }
-
-      await PushNotifications.register();
-
-      // Request permission for local notifications
+      // Request permission for local notifications (Android 13+ needs runtime permission)
       await LocalNotifications.requestPermissions();
-
-      // Add listeners
-      PushNotifications.addListener('registration', (token: Token) => {
-        console.log('Push registration success, token: ' + token.value);
-        setNotificationToken(token.value);
-      });
-
-      PushNotifications.addListener('registrationError', (error: any) => {
-        console.error('Error on registration: ' + JSON.stringify(error));
-      });
-
-      PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
-        console.log('Push notification received: ', notification);
-      });
-
-      PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-        console.log('Push notification action performed', notification.actionId, notification.inputValue);
-      });
 
     } catch (error) {
       console.error('Error initializing notifications:', error);
