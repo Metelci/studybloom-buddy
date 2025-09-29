@@ -469,14 +469,14 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
             <Card className="text-center">
               <CardContent className="p-4">
                 <TrendingUp className="w-6 h-6 mx-auto mb-2 text-success" />
-                <p className="text-lg font-bold text-on-surface">85%</p>
+                <p className="text-lg font-bold text-on-surface">0%</p>
                 <p className="text-xs text-on-surface-variant">Avg. Weekly Score</p>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-4">
                 <Trophy className="w-6 h-6 mx-auto mb-2 text-warning" />
-                <p className="text-lg font-bold text-on-surface">12</p>
+                <p className="text-lg font-bold text-on-surface">0</p>
                 <p className="text-xs text-on-surface-variant">Goals Completed</p>
               </CardContent>
             </Card>

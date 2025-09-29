@@ -302,21 +302,21 @@ export function Social() {
             <Card className="text-center">
               <CardContent className="p-3">
                 <TrendingUp className="w-6 h-6 mx-auto mb-1 text-primary" />
-                <p className="text-lg font-bold text-on-surface">3rd</p>
+                <p className="text-lg font-bold text-on-surface">-</p>
                 <p className="text-xs text-on-surface-variant">Your Rank</p>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-3">
                 <Target className="w-6 h-6 mx-auto mb-1 text-success" />
-                <p className="text-lg font-bold text-on-surface">2650</p>
+                <p className="text-lg font-bold text-on-surface">0</p>
                 <p className="text-xs text-on-surface-variant">Your Score</p>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-3">
                 <Star className="w-6 h-6 mx-auto mb-1 text-warning" />
-                <p className="text-lg font-bold text-on-surface">15</p>
+                <p className="text-lg font-bold text-on-surface">0</p>
                 <p className="text-xs text-on-surface-variant">Day Streak</p>
               </CardContent>
             </Card>
