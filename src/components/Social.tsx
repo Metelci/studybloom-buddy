@@ -28,71 +28,21 @@ import {
   Edit
 } from "lucide-react";
 
-// Mock data for demonstration
+// Empty initial data - users will create their own profiles and connect with others
 const leaderboardData = [
-  { rank: 1, name: "Alex Chen", score: 2850, streak: 25, avatar: "AC" },
-  { rank: 2, name: "Sarah Kim", score: 2720, streak: 18, avatar: "SK" },
-  { rank: 3, name: "You", score: 2650, streak: 15, avatar: "YU", isCurrentUser: true },
-  { rank: 4, name: "Mike Jones", score: 2580, streak: 12, avatar: "MJ" },
-  { rank: 5, name: "Emma Davis", score: 2450, streak: 20, avatar: "ED" },
+  { rank: 1, name: "You", score: 0, streak: 0, avatar: "YU", isCurrentUser: true },
 ];
 
 const studyGroups = [
-  {
-    id: 1,
-    name: "YDS Warriors",
-    members: 24,
-    activity: "High",
-    description: "Daily practice sessions",
-    category: "General YDS"
-  },
-  {
-    id: 2,
-    name: "Vocabulary Masters",
-    members: 18,
-    activity: "Medium",
-    description: "Focus on word building",
-    category: "Vocabulary"
-  },
-  {
-    id: 3,
-    name: "Grammar Experts",
-    members: 31,
-    activity: "High", 
-    description: "Advanced grammar practice",
-    category: "Grammar"
-  },
+  // Study groups will be populated as users create and join them
 ];
 
 const friends = [
-  { name: "Jessica Liu", status: "online", todayScore: 85, streak: 12, avatar: "JL" },
-  { name: "David Park", status: "offline", todayScore: 92, streak: 8, avatar: "DP" },
-  { name: "Lisa Wang", status: "studying", todayScore: 78, streak: 22, avatar: "LW" },
-  { name: "Tom Wilson", status: "online", todayScore: 88, streak: 5, avatar: "TW" },
+  // Friends list will be populated as users connect with each other
 ];
 
 const achievements = [
-  {
-    title: "Study Streak Master",
-    description: "Maintained 30-day streak",
-    icon: Crown,
-    rarity: "legendary",
-    unlockedBy: ["Alex Chen", "Sarah Kim"]
-  },
-  {
-    title: "Vocabulary Virtuoso", 
-    description: "Learned 1000+ words",
-    icon: BookOpen,
-    rarity: "epic",
-    unlockedBy: ["You", "Mike Jones", "Emma Davis"]
-  },
-  {
-    title: "Speed Demon",
-    description: "Completed 100 questions in 30min",
-    icon: Clock,
-    rarity: "rare", 
-    unlockedBy: ["Sarah Kim", "Lisa Wang"]
-  },
+  // Achievements will be unlocked as users progress through their studies
 ];
 
 const avatarOptions = [
@@ -108,9 +58,9 @@ const avatarOptions = [
 
 export function Social() {
   const [activeTab, setActiveTab] = useState("profile");
-  const [username, setUsername] = useState("StudyNinja42");
+  const [username, setUsername] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0]);
-  const [weeklyGoal, setWeeklyGoal] = useState([15]);
+  const [weeklyGoal, setWeeklyGoal] = useState([10]);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -150,20 +100,31 @@ export function Social() {
 
   return (
     <div className="p-4 pb-20 max-w-md mx-auto min-h-screen bg-background">
-      {/* Privacy Warning */}
-      <Alert className="mb-4 border-primary/20 bg-primary/5">
-        <Shield className="h-4 w-4 text-primary" />
-        <AlertDescription className="text-sm text-primary">
-          <strong>Privacy First:</strong> Your real identity is never shared. Only your chosen username and avatar are visible to others.
-        </AlertDescription>
-      </Alert>
-
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-on-surface">Social Hub</h1>
-        <Button variant="outline" size="sm" className="gap-1.5">
-          <UserPlus className="w-4 h-4" />
-          Invite Friends
-        </Button>
+      {/* Header */}
+      <div className="relative bg-gradient-to-r from-secondary/50 via-success/45 to-primary/55 rounded-2xl p-5 mb-4 overflow-hidden">
+        <div className="absolute top-0 right-0 w-28 h-28 bg-success/35 rounded-full blur-2xl" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-secondary/40 rounded-full blur-xl" />
+        <div className="relative flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Users className="w-5 h-5 text-success" />
+              <h1 className="text-xl font-bold text-slate-900 drop-shadow-md" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
+                Social Hub
+              </h1>
+            </div>
+            <p className="text-xs text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
+              Connect with fellow YDS students
+            </p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="gap-1.5 bg-gradient-to-r from-success/10 to-secondary/10 border-success/20 hover:border-success/30 transition-all"
+          >
+            <UserPlus className="w-4 h-4" />
+            Invite
+          </Button>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -257,71 +218,6 @@ export function Social() {
             </CardContent>
           </Card>
 
-          {/* Weekly Goal Setting */}
-          <Card className="bg-tertiary-container/30">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Target className="w-5 h-5 text-tertiary" />
-                Weekly Study Goal
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-on-surface">
-                    Study Hours per Week
-                  </Label>
-                  <div className="text-right">
-                    <span className="text-lg font-bold text-tertiary">{weeklyGoal[0]}h</span>
-                    <p className="text-xs text-on-surface-variant">
-                      ~{Math.round(weeklyGoal[0] / 7 * 10) / 10}h daily
-                    </p>
-                  </div>
-                </div>
-                
-                <Slider
-                  value={weeklyGoal}
-                  onValueChange={setWeeklyGoal}
-                  max={35}
-                  min={3}
-                  step={1}
-                  className="w-full"
-                />
-                
-                <div className="flex justify-between text-xs text-on-surface-variant">
-                  <span>3h (Casual)</span>
-                  <span>15h (Balanced)</span>
-                  <span>35h (Intensive)</span>
-                </div>
-              </div>
-
-              <div className="bg-surface-container p-3 rounded-lg">
-                <div className="grid grid-cols-2 gap-3 text-center">
-                  <div>
-                    <div className="text-sm font-bold text-tertiary">
-                      {Math.round((weeklyGoal[0] / 7) * 60)} min
-                    </div>
-                    <div className="text-xs text-on-surface-variant">Daily Target</div>
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-tertiary">
-                      {weeklyGoal[0] * 4} h
-                    </div>
-                    <div className="text-xs text-on-surface-variant">Monthly Goal</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button className="flex-1" variant="outline">
-                  Cancel
-                </Button>
-                <Button className="flex-1">
-                  Save Goal
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Privacy & Settings */}
           <Card>
@@ -406,21 +302,21 @@ export function Social() {
             <Card className="text-center">
               <CardContent className="p-3">
                 <TrendingUp className="w-6 h-6 mx-auto mb-1 text-primary" />
-                <p className="text-lg font-bold text-on-surface">3rd</p>
+                <p className="text-lg font-bold text-on-surface">-</p>
                 <p className="text-xs text-on-surface-variant">Your Rank</p>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-3">
                 <Target className="w-6 h-6 mx-auto mb-1 text-success" />
-                <p className="text-lg font-bold text-on-surface">2650</p>
+                <p className="text-lg font-bold text-on-surface">0</p>
                 <p className="text-xs text-on-surface-variant">Your Score</p>
               </CardContent>
             </Card>
             <Card className="text-center">
               <CardContent className="p-3">
                 <Star className="w-6 h-6 mx-auto mb-1 text-warning" />
-                <p className="text-lg font-bold text-on-surface">15</p>
+                <p className="text-lg font-bold text-on-surface">0</p>
                 <p className="text-xs text-on-surface-variant">Day Streak</p>
               </CardContent>
             </Card>

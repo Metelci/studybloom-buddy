@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrendingUp, Target, Clock, Award, BookOpen, Headphones, FileText, Sparkles, Brain, BarChart3, Calendar, Zap, Eye, AlertCircle } from "lucide-react";
+import { TrendingUp, Target, Clock, Award, BookOpen, Headphones, FileText, Sparkles, Brain, BarChart3, Calendar, Zap, Eye, AlertCircle, Trophy, Crown, Medal, Star, Gem } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress as ProgressBar } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,6 +22,9 @@ interface Achievement {
   icon: React.ReactNode;
   earned: boolean;
   date?: string;
+  tier: 'bronze' | 'silver' | 'gold' | 'platinum';
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  points: number;
 }
 
 export function Progress() {
@@ -32,36 +35,36 @@ export function Progress() {
     {
       skill: "Grammar",
       icon: <FileText size={16} />,
-      progress: 85,
-      level: "Advanced",
-      pointsEarned: 1250,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1500,
       color: "text-primary"
     },
     {
       skill: "Reading",
       icon: <BookOpen size={16} />,
-      progress: 72,
-      level: "Intermediate",
-      pointsEarned: 980,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1350,
       color: "text-secondary"
     },
     {
       skill: "Listening",
       icon: <Headphones size={16} />,
-      progress: 68,
-      level: "Intermediate",
-      pointsEarned: 890,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1300,
       color: "text-tertiary"
     },
     {
       skill: "Vocabulary",
       icon: <Sparkles size={16} />,
-      progress: 91,
-      level: "Expert",
-      pointsEarned: 1420,
+      progress: 0,
+      level: "Beginner",
+      pointsEarned: 0,
       totalPoints: 1550,
       color: "text-[hsl(263_67%_80%)]"
     }
@@ -73,30 +76,60 @@ export function Progress() {
       title: "First Steps",
       description: "Complete your first task",
       icon: <Target size={16} />,
-      earned: true,
-      date: "2024-01-15"
+      earned: false,
+      tier: 'bronze',
+      rarity: 'common',
+      points: 50
     },
     {
       id: "2",
       title: "Week Warrior",
       description: "Maintain 7-day streak",
-      icon: <Award size={16} />,
-      earned: true,
-      date: "2024-02-03"
+      icon: <Trophy size={16} />,
+      earned: false,
+      tier: 'silver',
+      rarity: 'rare',
+      points: 150
     },
     {
       id: "3",
       title: "Grammar Master",
       description: "Score 90% in grammar",
-      icon: <FileText size={16} />,
-      earned: false
+      icon: <Crown size={16} />,
+      earned: false,
+      tier: 'gold',
+      rarity: 'epic',
+      points: 300
     },
     {
       id: "4",
       title: "Speed Reader",
       description: "Read 50 articles",
       icon: <BookOpen size={16} />,
-      earned: false
+      earned: false,
+      tier: 'silver',
+      rarity: 'rare',
+      points: 200
+    },
+    {
+      id: "5",
+      title: "Perfect Score Legend",
+      description: "Get 100% on 5 consecutive tests",
+      icon: <Gem size={16} />,
+      earned: false,
+      tier: 'platinum',
+      rarity: 'legendary',
+      points: 500
+    },
+    {
+      id: "6",
+      title: "Study Streak Champion",
+      description: "Maintain 30-day study streak",
+      icon: <Medal size={16} />,
+      earned: false,
+      tier: 'gold',
+      rarity: 'epic',
+      points: 400
     }
   ];
 
@@ -107,13 +140,21 @@ export function Progress() {
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="text-center mb-3">
-        <h1 className="text-xl font-bold text-on-surface mb-1">
-          Your Progress 📊
-        </h1>
-        <p className="text-sm text-on-surface-variant">
-          Track your YDS exam preparation
-        </p>
+      <div className="relative bg-gradient-to-br from-tertiary/55 via-primary/50 to-secondary/45 rounded-2xl p-6 mb-4 overflow-hidden">
+        <div className="absolute top-2 right-4 w-16 h-16 bg-tertiary/40 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-4 w-20 h-20 bg-primary/35 rounded-full blur-2xl" />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-tertiary/10 text-tertiary px-3 py-1 rounded-full text-xs font-medium mb-3">
+            <BarChart3 size={12} />
+            Analytics Dashboard
+          </div>
+          <h1 className="text-2xl font-bold text-slate-900 drop-shadow-md mb-2" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
+            Your Progress 📊
+          </h1>
+          <p className="text-sm text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
+            Track your journey to YDS success
+          </p>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -166,7 +207,7 @@ export function Progress() {
             <CardContent className="p-0">
               <div className="space-y-2">
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
-                  const progress = [85, 92, 78, 95, 88, 0, 0][index];
+                  const progress = 0; // Reset all progress to 0
                   return (
                     <div key={day} className="flex items-center gap-2">
                       <span className="text-xs text-card-foreground/80 w-8">{day}</span>
@@ -196,11 +237,11 @@ export function Progress() {
             </div>
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
-                <div className="text-lg font-bold text-card-foreground">12h 30m</div>
+                <div className="text-lg font-bold text-card-foreground">0h 0m</div>
                 <div className="text-xs text-card-foreground/80">Total</div>
               </div>
               <div>
-                <div className="text-lg font-bold text-card-foreground">1h 47m</div>
+                <div className="text-lg font-bold text-card-foreground">0h 0m</div>
                 <div className="text-xs text-card-foreground/80">Daily Avg</div>
               </div>
             </div>
@@ -232,51 +273,195 @@ export function Progress() {
           ))}
         </TabsContent>
 
-        <TabsContent value="achievements" className="space-y-2 mt-0">
-          <div className="grid gap-2">
-            {achievements.map((achievement) => (
-              <Card 
-                key={achievement.id} 
-                className={`p-3 ${achievement.earned ? 'bg-success-container' : 'bg-surface-container opacity-60'}`}
-              >
-                <div className="flex items-center gap-2">
-                  <div className={`p-1.5 rounded-full ${
-                    achievement.earned 
-                      ? 'bg-success text-success-foreground' 
-                      : 'bg-surface text-on-surface-variant'
-                  }`}>
-                    {achievement.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={`font-medium text-sm ${
-                      achievement.earned 
-                        ? 'text-success-container-foreground' 
-                        : 'text-on-surface-variant'
-                    }`}>
-                      {achievement.title}
-                    </h3>
-                    <p className={`text-xs ${
-                      achievement.earned 
-                        ? 'text-success-container-foreground/80' 
-                        : 'text-on-surface-variant/80'
-                    }`}>
-                      {achievement.description}
-                    </p>
-                    {achievement.earned && achievement.date && (
-                      <p className="text-xs text-success-container-foreground/60 mt-1">
-                        Earned on {new Date(achievement.date).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
-                  {achievement.earned && (
-                    <Badge className="bg-success text-success-foreground text-xs">
-                      ✓
-                    </Badge>
-                  )}
-                </div>
-              </Card>
-            ))}
+        <TabsContent value="achievements" className="space-y-3 mt-0">
+          {/* Achievement Stats Header */}
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-bronze/20 to-achievement-bronze/5 border-achievement-bronze/30">
+              <div className="text-lg font-bold text-achievement-bronze mb-1">{achievements.filter(a => a.earned && a.tier === 'bronze').length}</div>
+              <div className="text-xs text-muted-foreground">Bronze</div>
+            </Card>
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-silver/20 to-achievement-silver/5 border-achievement-silver/30">
+              <div className="text-lg font-bold text-achievement-silver mb-1">{achievements.filter(a => a.earned && a.tier === 'silver').length}</div>
+              <div className="text-xs text-muted-foreground">Silver</div>
+            </Card>
+            <Card className="p-3 text-center bg-gradient-to-br from-achievement-gold/20 to-achievement-gold/5 border-achievement-gold/30">
+              <div className="text-lg font-bold text-achievement-gold mb-1">{achievements.filter(a => a.earned && a.tier === 'gold').length}</div>
+              <div className="text-xs text-muted-foreground">Gold</div>
+            </Card>
           </div>
+
+          {/* Achievements Grid */}
+          <div className="grid gap-3">
+            {achievements.map((achievement) => {
+              const getTierGradient = (tier: string, earned: boolean) => {
+                if (!earned) return 'bg-surface-container border-outline-variant';
+                
+                switch (tier) {
+                  case 'bronze':
+                    return 'bg-gradient-to-br from-[#CD7F32]/20 via-[#CD7F32]/10 to-[#CD7F32]/5 border-[#CD7F32]/40 shadow-lg shadow-[#CD7F32]/10';
+                  case 'silver':
+                    return 'bg-gradient-to-br from-slate-400/20 via-slate-300/10 to-slate-200/5 border-slate-400/40 shadow-lg shadow-slate-400/10';
+                  case 'gold':
+                    return 'bg-gradient-to-br from-yellow-400/20 via-yellow-300/10 to-yellow-200/5 border-yellow-400/40 shadow-lg shadow-yellow-400/10';
+                  case 'platinum':
+                    return 'bg-gradient-to-br from-purple-400/20 via-purple-300/10 to-purple-200/5 border-purple-400/40 shadow-lg shadow-purple-400/10';
+                  default:
+                    return 'bg-surface-container border-outline-variant';
+                }
+              };
+
+              const getRarityBadge = (rarity: string) => {
+                switch (rarity) {
+                  case 'common':
+                    return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+                  case 'rare':
+                    return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+                  case 'epic':
+                    return 'bg-purple-500/10 text-purple-600 border-purple-500/20';
+                  case 'legendary':
+                    return 'bg-gradient-to-r from-yellow-400/10 to-orange-400/10 text-orange-600 border-orange-400/20';
+                  default:
+                    return 'bg-slate-500/10 text-slate-600 border-slate-500/20';
+                }
+              };
+
+              const getIconContainer = (tier: string, earned: boolean) => {
+                if (!earned) return 'bg-surface text-on-surface-variant';
+                
+                switch (tier) {
+                  case 'bronze':
+                    return 'bg-gradient-to-br from-[#CD7F32] to-[#B8860B] text-white shadow-md';
+                  case 'silver':
+                    return 'bg-gradient-to-br from-slate-400 to-slate-500 text-white shadow-md';
+                  case 'gold':
+                    return 'bg-gradient-to-br from-yellow-400 to-yellow-500 text-white shadow-md';
+                  case 'platinum':
+                    return 'bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md';
+                  default:
+                    return 'bg-surface text-on-surface-variant';
+                }
+              };
+
+              return (
+                <Card 
+                  key={achievement.id} 
+                  className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${getTierGradient(achievement.tier, achievement.earned)} ${
+                    achievement.earned ? '' : 'opacity-60 hover:opacity-80'
+                  }`}
+                >
+                  
+                  <CardContent className="p-3">
+                    <div className="flex items-start gap-2">
+                      <div className={`p-2 rounded-full ${getIconContainer(achievement.tier, achievement.earned)} relative`}>
+                        {achievement.earned && achievement.tier === 'platinum' && (
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-300/50 to-purple-600/50 animate-pulse" />
+                        )}
+                        <div className="relative z-10">
+                          {achievement.icon}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h3 className={`font-semibold text-sm leading-tight ${
+                            achievement.earned 
+                              ? 'text-foreground' 
+                              : 'text-on-surface-variant'
+                          }`}>
+                            {achievement.title}
+                          </h3>
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge 
+                              variant="outline" 
+                              className={`text-[10px] px-1.5 py-0.5 ${getRarityBadge(achievement.rarity)}`}
+                            >
+                              {achievement.rarity}
+                            </Badge>
+                            {achievement.earned && (
+                              <div className="flex items-center gap-1">
+                                <Star size={10} className="text-yellow-500 fill-yellow-500" />
+                                <span className="text-xs font-medium text-yellow-600">+{achievement.points}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <p className={`text-xs mb-1 leading-relaxed ${
+                          achievement.earned 
+                            ? 'text-foreground/80' 
+                            : 'text-on-surface-variant/80'
+                        }`}>
+                          {achievement.description}
+                        </p>
+                        
+                        <div className="flex items-center justify-between">
+                          {achievement.earned && achievement.date && (
+                            <p className="text-xs text-muted-foreground">
+                              Earned {new Date(achievement.date).toLocaleDateString()}
+                            </p>
+                          )}
+                          {!achievement.earned && (
+                            <p className="text-xs text-muted-foreground">
+                              {achievement.points} points reward
+                            </p>
+                          )}
+                          
+                          {achievement.earned && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                              <span className="text-xs font-medium text-green-600">Completed</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  
+                  {/* Bottom Glow Effect for Special Achievements */}
+                  {achievement.earned && achievement.tier === 'platinum' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-400/60 to-transparent" />
+                  )}
+                  {achievement.earned && achievement.tier === 'gold' && (
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent" />
+                  )}
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Achievement Progress Summary */}
+          <Card className="p-4 bg-gradient-to-br from-primary/10 via-secondary/5 to-tertiary/10 border-primary/20 mt-4">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-2 bg-primary rounded-full">
+                <Award className="w-4 h-4 text-primary-foreground" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-sm text-foreground">Achievement Progress</h3>
+                <p className="text-xs text-muted-foreground">
+                  {achievements.filter(a => a.earned).length} of {achievements.length} unlocked
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Progress</span>
+                <span className="font-medium text-foreground">
+                  {Math.round((achievements.filter(a => a.earned).length / achievements.length) * 100)}%
+                </span>
+              </div>
+              <ProgressBar 
+                value={(achievements.filter(a => a.earned).length / achievements.length) * 100} 
+                className="h-2"
+              />
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Total Points Earned</span>
+                <span className="font-medium text-primary">
+                  {achievements.filter(a => a.earned).reduce((sum, a) => sum + a.points, 0)} pts
+                </span>
+              </div>
+            </div>
+          </Card>
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-3 mt-0">
@@ -300,11 +485,11 @@ export function Progress() {
                 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">87%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Avg Score</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">42</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Tasks Done</div>
                   </div>
                 </div>
@@ -312,30 +497,30 @@ export function Progress() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Grammar</span>
-                    <span className="font-medium text-card-foreground">+12%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={85} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                   
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Reading</span>
-                    <span className="font-medium text-card-foreground">+8%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={78} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                   
                   <div className="flex justify-between text-xs">
                     <span className="text-card-foreground/80">Listening</span>
-                    <span className="font-medium text-card-foreground">+15%</span>
+                    <span className="font-medium text-card-foreground">0%</span>
                   </div>
-                  <ProgressBar value={92} className="h-1.5" />
+                  <ProgressBar value={0} className="h-1.5" />
                 </div>
               </Card>
 
-              <Card className="p-3 bg-success-container">
+              <Card className="p-3 bg-surface-variant">
                 <div className="flex items-center gap-2">
-                  <TrendingUp size={14} className="text-success-container-foreground" />
+                  <Calendar size={14} className="text-on-surface-variant" />
                   <div>
-                    <h4 className="font-medium text-sm text-success-container-foreground">Weekly Streak</h4>
-                    <p className="text-xs text-success-container-foreground/80">You're on fire! 7 days in a row</p>
+                    <h4 className="font-medium text-sm text-on-surface">Start Your Journey</h4>
+                    <p className="text-xs text-on-surface-variant">Complete tasks to see your weekly analytics</p>
                   </div>
                 </div>
               </Card>
@@ -352,15 +537,15 @@ export function Progress() {
                 
                 <div className="grid grid-cols-3 gap-2 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">84%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Avg Score</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">156</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Tasks</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-tertiary">28h</div>
+                    <div className="text-lg font-bold text-tertiary">0h</div>
                     <div className="text-xs text-card-foreground/80">Study Time</div>
                   </div>
                 </div>
@@ -368,7 +553,7 @@ export function Progress() {
                 <div className="space-y-2">
                   <h4 className="font-medium text-xs text-card-foreground">Monthly Progress</h4>
                   {['Week 1', 'Week 2', 'Week 3', 'Week 4'].map((week, index) => {
-                    const progress = [72, 81, 89, 94][index];
+                    const progress = 0;
                     return (
                       <div key={week} className="flex items-center gap-2">
                         <span className="text-xs text-card-foreground/80 w-12">{week}</span>
@@ -384,12 +569,12 @@ export function Progress() {
                 </div>
               </Card>
 
-              <Card className="p-3 bg-primary-container">
+              <Card className="p-3 bg-surface-variant">
                 <div className="flex items-center gap-2">
-                  <Award size={14} className="text-primary-container-foreground" />
+                  <BarChart3 size={14} className="text-on-surface-variant" />
                   <div>
-                    <h4 className="font-medium text-sm text-primary-container-foreground">Best Month Ever!</h4>
-                    <p className="text-xs text-primary-container-foreground/80">18% improvement from last month</p>
+                    <h4 className="font-medium text-sm text-on-surface">Build Your Stats</h4>
+                    <p className="text-xs text-on-surface-variant">Complete tasks consistently to see monthly trends</p>
                   </div>
                 </div>
               </Card>
@@ -406,11 +591,11 @@ export function Progress() {
                 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-primary">82%</div>
+                    <div className="text-lg font-bold text-primary">0%</div>
                     <div className="text-xs text-card-foreground/80">Overall Avg</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-secondary">847</div>
+                    <div className="text-lg font-bold text-secondary">0</div>
                     <div className="text-xs text-card-foreground/80">Total Tasks</div>
                   </div>
                 </div>
@@ -419,19 +604,19 @@ export function Progress() {
                   <h4 className="font-medium text-xs text-card-foreground">Learning Journey</h4>
                   <div className="grid grid-cols-4 gap-1 text-center">
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">156h</div>
+                      <div className="text-sm font-bold text-card-foreground">0h</div>
                       <div className="text-xs text-card-foreground/80">Study</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">23</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Streaks</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">89</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Days</div>
                     </div>
                     <div>
-                      <div className="text-sm font-bold text-card-foreground">12</div>
+                      <div className="text-sm font-bold text-card-foreground">0</div>
                       <div className="text-xs text-card-foreground/80">Levels</div>
                     </div>
                   </div>
@@ -440,8 +625,8 @@ export function Progress() {
                 <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-2 rounded-lg">
                   <div className="text-xs text-card-foreground/80 mb-1">Progress Milestones</div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs text-card-foreground">Started: Jan 15</span>
-                    <span className="text-xs font-medium text-primary">89 days ago</span>
+                    <span className="text-xs text-card-foreground">Ready to start your journey</span>
+                    <span className="text-xs font-medium text-primary">Day 0</span>
                   </div>
                 </div>
               </Card>
@@ -457,40 +642,23 @@ export function Progress() {
                 </div>
                 
                 <div className="space-y-3">
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Strength Areas</h4>
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Grammar Rules</span>
-                        <Badge className="bg-success text-success-foreground text-xs">Strong</Badge>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Vocabulary</span>
-                        <Badge className="bg-success text-success-foreground text-xs">Excellent</Badge>
-                      </div>
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <BarChart3 size={24} className="text-primary" />
                     </div>
+                    <h4 className="text-sm font-medium text-card-foreground mb-1">No Performance Data Yet</h4>
+                    <p className="text-xs text-card-foreground/70 mb-4">
+                      Complete tasks and assessments to unlock detailed performance analysis and personalized insights.
+                    </p>
                   </div>
 
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Areas to Improve</h4>
-                    <div className="space-y-1">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Reading Speed</span>
-                        <Badge variant="destructive" className="text-xs">Focus</Badge>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-card-foreground/80">Complex Grammar</span>
-                        <Badge className="bg-warning text-warning-foreground text-xs">Practice</Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Peak Performance Times</h4>
-                    <div className="text-xs text-card-foreground/80">
-                      <div>• Best: 2-4 PM (94% avg score)</div>
-                      <div>• Good: 10-12 AM (88% avg score)</div>
-                      <div>• Avoid: 6-8 PM (72% avg score)</div>
+                  <div className="space-y-2">
+                    <h4 className="font-medium text-xs text-card-foreground">What you'll see:</h4>
+                    <div className="space-y-1 text-xs text-card-foreground/80">
+                      <div>• Strength and weakness analysis</div>
+                      <div>• Optimal study time recommendations</div>
+                      <div>• Skill progression tracking</div>
+                      <div>• Performance trends over time</div>
                     </div>
                   </div>
                 </div>
@@ -506,46 +674,34 @@ export function Progress() {
                   <h3 className="font-medium text-sm text-card-foreground">AI Insights & Patterns</h3>
                 </div>
                 
-                <div className="space-y-3">
-                  <Card className="p-2 bg-primary-container/50">
-                    <div className="flex items-start gap-2">
-                      <Eye size={12} className="text-primary-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-primary-container-foreground">Learning Pattern Detected</h4>
-                        <p className="text-xs text-primary-container-foreground/80">You perform 23% better on grammar tasks after vocabulary practice sessions.</p>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Brain size={32} className="text-primary" />
+                  </div>
+                  <h4 className="text-base font-semibold text-card-foreground mb-2">AI Analysis Coming Soon</h4>
+                  <p className="text-sm text-card-foreground/70 mb-6">
+                    Once you start completing tasks, our AI will analyze your learning patterns and provide personalized insights to optimize your study strategy.
+                  </p>
+                  
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-xs text-card-foreground">What AI will discover:</h4>
+                    <div className="space-y-2 text-xs text-card-foreground/80">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span>Your optimal learning times and patterns</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <Card className="p-2 bg-secondary-container/50">
-                    <div className="flex items-start gap-2">
-                      <TrendingUp size={12} className="text-secondary-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-secondary-container-foreground">Progress Acceleration</h4>
-                        <p className="text-xs text-secondary-container-foreground/80">Your learning curve shows exponential improvement. Keep the current pace!</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-secondary rounded-full"></div>
+                        <span>Skill connections and learning accelerators</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <Card className="p-2 bg-warning-container/50">
-                    <div className="flex items-start gap-2">
-                      <AlertCircle size={12} className="text-warning-container-foreground mt-0.5" />
-                      <div>
-                        <h4 className="font-medium text-xs text-warning-container-foreground">Optimization Tip</h4>
-                        <p className="text-xs text-warning-container-foreground/80">Consider 15-minute breaks between reading sessions for 18% better retention.</p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-tertiary rounded-full"></div>
+                        <span>Personalized study recommendations</span>
                       </div>
-                    </div>
-                  </Card>
-
-                  <div className="mt-3">
-                    <h4 className="font-medium text-xs text-card-foreground mb-2">Predicted Exam Readiness</h4>
-                    <div className="bg-success-container/30 p-2 rounded-lg">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-success-container-foreground">Current Trajectory</span>
-                        <span className="font-bold text-sm text-success-container-foreground">89%</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                        <span>Exam readiness predictions</span>
                       </div>
-                      <ProgressBar value={89} className="h-1.5 mb-1" />
-                      <p className="text-xs text-success-container-foreground/80">Ready for exam in ~3 weeks at current pace</p>
                     </div>
                   </div>
                 </div>

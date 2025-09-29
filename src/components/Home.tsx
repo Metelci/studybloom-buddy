@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Sparkles, TrendingUp, Brain } from "lucide-react";
+import { Sparkles, TrendingUp, Brain, Target } from "lucide-react";
 import { ProgressRing } from "./ProgressRing";
 import { StreakCounter } from "./StreakCounter";
 import { TaskCard } from "./TaskCard";
 import { ExamCountdown } from "./ExamCountdown";
 import { WeeklyStudyPlan } from "./WeeklyStudyPlan";
+import { ExamInfo } from "./ExamInfo";
+import { ThemeToggle } from "./ThemeToggle";
+import { ExamService, type ExamData } from "@/services/examService";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -22,37 +25,28 @@ interface HomeProps {
 }
 
 export function Home({ onNavigateToTasks }: HomeProps) {
-  const [todayProgress, setTodayProgress] = useState(65);
-  const [streakDays, setStreakDays] = useState(12);
+  const [todayProgress, setTodayProgress] = useState(0);
+  const [streakDays, setStreakDays] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      title: "Complete Grammar Practice Set",
-      skillType: "grammar",
-      points: 50,
-      estimatedTime: 15,
-      completed: false
-    },
-    {
-      id: "2", 
-      title: "Reading Comprehension - Science Articles",
-      skillType: "reading",
-      points: 75,
-      estimatedTime: 20,
-      completed: false
-    },
-    {
-      id: "3",
-      title: "Vocabulary Builder - Advanced Words",
-      skillType: "vocabulary", 
-      points: 40,
-      estimatedTime: 10,
-      completed: true
-    }
-  ]);
+  const [showExamInfo, setShowExamInfo] = useState(false);
+  const [examData, setExamData] = useState<ExamData | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-  const examDate = new Date('2024-12-15');
+  useEffect(() => {
+    // Load exam data when component mounts
+    const loadExamData = async () => {
+      try {
+        const data = await ExamService.getExamData();
+        setExamData(data);
+      } catch (error) {
+        console.error('Error loading exam data:', error);
+      }
+    };
+    loadExamData();
+  }, []);
+
+  const nextExam = examData?.nextExam;
+  const examDate = nextExam ? new Date(nextExam.date) : new Date('2025-05-18');
   const completedTasks = tasks.filter(task => task.completed);
   const todayScore = completedTasks.reduce((sum, task) => sum + task.points, 0);
   
@@ -74,16 +68,32 @@ export function Home({ onNavigateToTasks }: HomeProps) {
     }
   };
 
+  if (showExamInfo) {
+    return <ExamInfo onBack={() => setShowExamInfo(false)} />;
+  }
+
   return (
     <div className="pb-20 px-4 pt-4 max-w-md mx-auto space-y-3">
       {/* Header */}
-      <div className="text-center mb-3">
-        <h1 className="text-xl font-bold text-on-surface mb-1">
-          Good morning! 👋
-        </h1>
-        <p className="text-sm text-on-surface-variant">
-          Ready to ace your YDS exam?
-        </p>
+      <div className="relative bg-gradient-to-br from-primary/60 via-secondary/50 to-tertiary/55 rounded-2xl p-4 mb-3 overflow-hidden">
+        {/* Theme Toggle in top right */}
+        <div className="absolute top-3 right-3 z-10">
+          <ThemeToggle />
+        </div>
+        <div className="absolute top-2 right-2 w-16 h-16 bg-primary/30 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-12 h-12 bg-secondary/35 rounded-full blur-xl" />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 bg-success/10 text-success px-2.5 py-0.5 rounded-full text-xs font-medium mb-2">
+            <Sparkles size={10} />
+            Ready to Study
+          </div>
+          <h1 className="text-xl font-bold text-slate-900 drop-shadow-md mb-1" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
+            Good morning! 👋
+          </h1>
+          <p className="text-xs text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
+            Let's make today count toward your YDS success
+          </p>
+        </div>
       </div>
 
       {/* Progress Ring and Countdown Side by Side */}
@@ -99,13 +109,16 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         {/* Countdown Card */}
-        <Card className="flex-1 p-3 bg-primary-container">
+        <Card 
+          className="flex-1 p-3 bg-primary-container cursor-pointer hover:bg-primary-container/80 transition-colors"
+          onClick={() => setShowExamInfo(true)}
+        >
           <div className="text-center">
             <div className="text-2xl font-bold text-primary-container-foreground mb-1">
               {Math.ceil((examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))}
             </div>
             <div className="text-xs text-primary-container-foreground/80 mb-2">
-              Days to YDS
+              Days to {nextExam?.name || 'YDS'}
             </div>
             
             {/* Progress Bar */}
@@ -121,7 +134,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
             </div>
             
             <div className="text-xs text-primary-container-foreground/60 mt-1">
-              Exam Preparation
+              {nextExam?.status || 'Exam Preparation'}
             </div>
           </div>
         </Card>
@@ -174,8 +187,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         <p className="text-xs text-card-foreground/90 mb-2">
-          Based on your progress, focus on <strong>reading comprehension</strong> today. 
-          You're 85% ready for grammar but could improve reading speed by 15%.
+          Start your YDS preparation journey! Complete your first task to receive personalized recommendations based on your performance.
         </p>
         
         <Button 
@@ -184,7 +196,7 @@ export function Home({ onNavigateToTasks }: HomeProps) {
           className="w-full text-xs border-primary text-primary hover:bg-primary-container"
         >
           <Sparkles size={14} className="mr-1" />
-          Try Recommended Task
+          Start Your Journey
         </Button>
       </Card>
 
@@ -198,13 +210,30 @@ export function Home({ onNavigateToTasks }: HomeProps) {
         </div>
         
         <div className="space-y-2">
-          {tasks.slice(0, 3).map(task => (
-            <TaskCard
-              key={task.id}
-              {...task}
-              onComplete={handleTaskComplete}
-            />
-          ))}
+          {tasks.length === 0 ? (
+            <Card className="p-4 text-center">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Target size={24} className="text-primary" />
+                </div>
+                <h3 className="font-medium text-sm text-on-surface mb-1">Ready to Start?</h3>
+                <p className="text-xs text-on-surface/80 mb-3">
+                  Your daily tasks will appear here once you begin your study journey.
+                </p>
+                <Button size="sm" className="text-xs">
+                  Explore Tasks
+                </Button>
+              </div>
+            </Card>
+          ) : (
+            tasks.slice(0, 3).map(task => (
+              <TaskCard
+                key={task.id}
+                {...task}
+                onComplete={handleTaskComplete}
+              />
+            ))
+          )}
         </div>
         
         {tasks.length > 3 && (

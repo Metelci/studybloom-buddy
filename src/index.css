@@ -263,6 +263,36 @@ All colors MUST be HSL.
     100% { transform: scale(1); }
   }
 
+  /* Achievement Animation Delays */
+  .animation-delay-100 {
+    animation-delay: 0.1s;
+  }
+  
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  /* Achievement Tier Colors */
+  .text-achievement-bronze {
+    color: #CD7F32;
+  }
+  
+  .text-achievement-silver {
+    color: hsl(0, 0%, 70%);
+  }
+  
+  .text-achievement-gold {
+    color: hsl(45, 100%, 60%);
+  }
+  
+  .text-achievement-platinum {
+    color: hsl(263, 67%, 70%);
+  }
+
   /* Swipe Gesture Feedback */
   .swipe-complete {
     background: linear-gradient(90deg, 

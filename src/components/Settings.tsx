@@ -209,27 +209,11 @@ const settingsData: Record<string, SettingItem[]> = {
       icon: Brain
     },
     {
-      id: "auto_difficulty",
-      label: "Auto Difficulty Adjustment",
-      description: "Automatically adjust task difficulty",
-      type: "toggle",
-      value: true,
-      icon: Target
-    },
-    {
       id: "daily_goals",
       label: "Daily Goal Reminders",
       description: "Remind me of my daily study goals",
       type: "toggle",
       value: true,
-      icon: Calendar
-    },
-    {
-      id: "weekend_mode",
-      label: "Weekend Mode",
-      description: "Lighter study load on weekends",
-      type: "toggle",
-      value: false,
       icon: Calendar
     }
   ]
@@ -257,9 +241,7 @@ export function Settings() {
     data_analytics: true,
     progress_sharing: true,
     smart_scheduling: true,
-    auto_difficulty: true,
-    daily_goals: true,
-    weekend_mode: false
+    daily_goals: true
   });
 
   const handleToggle = (settingId: string, value: boolean) => {
@@ -309,19 +291,32 @@ export function Settings() {
   return (
     <div className="p-6 pb-20 max-w-md mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold text-on-surface">Settings</h1>
-          {isNative && (
-            <Badge variant="secondary" className="bg-success/20 text-success">
-              Mobile App
-            </Badge>
-          )}
+      <div className="relative bg-gradient-to-br from-warning/50 via-primary/55 to-tertiary/45 rounded-2xl p-4 mb-3 overflow-hidden">
+        <div className="absolute top-2 right-2 w-16 h-16 bg-warning/35 rounded-full blur-xl" />
+        <div className="absolute bottom-2 left-2 w-12 h-12 bg-tertiary/40 rounded-full blur-xl" />
+        <div className="relative">
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-primary/10 rounded-lg">
+                <Brain size={16} className="text-primary" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900 drop-shadow-md" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.8)'}}>
+                  Settings
+                </h1>
+                <p className="text-xs text-slate-800 drop-shadow-sm" style={{textShadow: '1px 1px 2px rgba(255,255,255,0.6)'}}>
+                  Customize your study experience
+                </p>
+              </div>
+            </div>
+            {isNative && (
+              <Badge className="bg-gradient-to-r from-success/20 to-primary/20 text-success border-success/30">
+                <Smartphone size={12} className="mr-1" />
+                Native
+              </Badge>
+            )}
+          </div>
         </div>
-        <p className="text-sm text-on-surface-variant">
-          Customize your study experience
-          {isNative && " • Native mobile features enabled"}
-        </p>
       </div>
 
       {/* Section Navigation */}

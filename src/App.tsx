@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { Navigation } from "@/components/Navigation";
 import { Home } from "@/components/Home";
 import { Progress } from "@/components/Progress";
@@ -52,19 +53,21 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <div className="min-h-screen bg-background">
-          <main className="min-h-screen">
-            {renderActiveScreen()}
-          </main>
-          <Navigation 
-            activeTab={activeTab} 
-            onTabChange={setActiveTab} 
-          />
-        </div>
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <div className="min-h-screen bg-background">
+            <main className="min-h-screen">
+              {renderActiveScreen()}
+            </main>
+            <Navigation 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab} 
+            />
+          </div>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
