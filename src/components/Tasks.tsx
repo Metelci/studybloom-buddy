@@ -115,16 +115,29 @@ const generateDailyTasks = (studyPlan: any) => {
 const getTaskDescription = (type: string, title: string) => {
   switch (type) {
     case 'grammar':
-      return `Study and practice ${title.replace('Grammar: ', '')} with exercises and examples. Focus on understanding the rules and applying them in context.`;
+      return `Study and practice ${title.replace('Grammar: ', '')} with detailed exercises from Raymond Murphy's grammar books. Follow the structured approach with theory, examples, and practice.`;
     case 'vocabulary':
-      return `Learn new academic vocabulary words, their meanings, usage, and practice using them in sentences. Build your word bank systematically.`;
+      return `Learn new academic vocabulary words, their meanings, usage, and practice using them in sentences. Build your word bank systematically with context-based learning.`;
     case 'reading':
-      return `Practice reading comprehension with academic texts. Focus on understanding main ideas, supporting details, and inference skills.`;
+      return `Practice reading comprehension with academic texts. Focus on understanding main ideas, supporting details, inference skills, and vocabulary in context.`;
     case 'listening':
-      return `Improve your listening skills with academic lectures and conversations. Practice note-taking and identifying key information.`;
+      return `Improve your listening skills with academic lectures and conversations. Practice note-taking, identifying key information, and understanding different accents.`;
     default:
-      return `Complete this study session focusing on ${title}. Take your time and practice actively.`;
+      return `Complete this study session focusing on ${title}. Take your time and practice actively with the provided materials.`;
   }
+};
+
+// Helper function to get book unit information
+const getBookUnitInfo = (studyPlan: any, taskTitle: string) => {
+  if (!studyPlan?.recommendedBook?.units) return null;
+  
+  // Extract topic from task title (e.g., "Grammar: Present tenses" -> "Present tenses")
+  const topic = taskTitle.replace('Grammar: ', '');
+  const bookUnits = studyPlan.recommendedBook.units;
+  
+  // Find matching unit information
+  const unitInfo = bookUnits[topic];
+  return unitInfo || null;
 };
 
 // Helper function to generate weekly goals from study plan  
@@ -828,15 +841,55 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                 </p>
               </div>
 
+              {/* Book Unit Information - Only show for grammar tasks */}
+              {selectedTask.category === 'grammar' && studyPlan && (() => {
+                const unitInfo = getBookUnitInfo(studyPlan, selectedTask.title);
+                return unitInfo ? (
+                  <div className="space-y-3 p-3 bg-primary/5 rounded-lg border border-primary/20">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-primary" />
+                      <h4 className="text-sm font-medium text-primary">
+                        {studyPlan.recommendedBook?.title} - {unitInfo.unit}
+                      </h4>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div>
+                        <h5 className="text-xs font-medium text-on-surface mb-1">Content:</h5>
+                        <p className="text-xs text-on-surface-variant">{unitInfo.content}</p>
+                      </div>
+                      
+                      <div>
+                        <h5 className="text-xs font-medium text-on-surface mb-1">Instructions:</h5>
+                        <p className="text-xs text-on-surface-variant">{unitInfo.instructions}</p>
+                      </div>
+                      
+                      <div>
+                        <h5 className="text-xs font-medium text-on-surface mb-1">Examples:</h5>
+                        <div className="space-y-1">
+                          {unitInfo.examples?.map((example: string, index: number) => (
+                            <div key={index} className="text-xs text-on-surface-variant bg-surface/50 px-2 py-1 rounded">
+                              "{example}"
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null;
+              })()}
+
               {/* Study Tips */}
               <div className="space-y-2">
                 <h4 className="text-sm font-medium text-on-surface">Study Tips:</h4>
                 <div className="space-y-1 text-xs text-on-surface-variant">
                   {selectedTask.category === 'grammar' && (
                     <>
-                      <div>• Read the theory and examples carefully</div>
-                      <div>• Practice with the exercises provided</div>
-                      <div>• Take notes on key rules and exceptions</div>
+                      <div>• Read the theory and examples in the specified units</div>
+                      <div>• Complete exercises A, B, and C in order</div>
+                      <div>• Use the Answer Key to check immediately after each exercise</div>
+                      <div>• Review the Additional Exercises for extra practice</div>
+                      <div>• Take notes on key rules and common mistakes</div>
                     </>
                   )}
                   {selectedTask.category === 'vocabulary' && (
@@ -844,13 +897,15 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                       <div>• Use new words in example sentences</div>
                       <div>• Focus on word families and collocations</div>
                       <div>• Practice pronunciation of new words</div>
+                      <div>• Keep a vocabulary journal with definitions and examples</div>
                     </>
                   )}
                   {selectedTask.category === 'reading' && (
                     <>
                       <div>• Skim first, then read carefully</div>
                       <div>• Identify main ideas and supporting details</div>
-                      <div>• Take notes on key vocabulary</div>
+                      <div>• Take notes on key vocabulary and phrases</div>
+                      <div>• Practice inference and critical thinking skills</div>
                     </>
                   )}
                   {selectedTask.category === 'listening' && (
@@ -858,6 +913,7 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                       <div>• Listen once for general understanding</div>
                       <div>• Listen again taking detailed notes</div>
                       <div>• Focus on key information and transitions</div>
+                      <div>• Practice with different accents and speeds</div>
                     </>
                   )}
                 </div>
