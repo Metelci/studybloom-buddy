@@ -101,11 +101,30 @@ const generateDailyTasks = (studyPlan: any) => {
     difficulty: "medium",
     timeEstimate: `${session.duration} min`,
     points: Math.round(session.duration / 5) * 10, // 10 points per 5 minutes
-    completed: false,
+    completed: session.completed || false,
     locked: false,
     streak: 0,
-    source: session.source
+    source: session.source,
+    type: session.type,
+    duration: session.duration,
+    description: getTaskDescription(session.type, session.title)
   }));
+};
+
+// Helper function to get task descriptions
+const getTaskDescription = (type: string, title: string) => {
+  switch (type) {
+    case 'grammar':
+      return `Study and practice ${title.replace('Grammar: ', '')} with exercises and examples. Focus on understanding the rules and applying them in context.`;
+    case 'vocabulary':
+      return `Learn new academic vocabulary words, their meanings, usage, and practice using them in sentences. Build your word bank systematically.`;
+    case 'reading':
+      return `Practice reading comprehension with academic texts. Focus on understanding main ideas, supporting details, and inference skills.`;
+    case 'listening':
+      return `Improve your listening skills with academic lectures and conversations. Practice note-taking and identifying key information.`;
+    default:
+      return `Complete this study session focusing on ${title}. Take your time and practice actively.`;
+  }
 };
 
 // Helper function to generate weekly goals from study plan  
@@ -138,6 +157,8 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showStudyPlanCreator, setShowStudyPlanCreator] = useState(false);
   const [studyPlan, setStudyPlan] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showTaskDetail, setShowTaskDetail] = useState(false);
   const { scheduleStudyReminder, scheduleStreakReminder, isNative } = useNativeFeatures();
 
   // Load saved study plan and weekly goal on component mount
@@ -242,6 +263,35 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
       setSavedWeeklyGoal([newPlan.hoursPerWeek]);
     }
     setShowStudyPlanCreator(false);
+  };
+
+  const handleStartTask = (task: any) => {
+    setSelectedTask(task);
+    setShowTaskDetail(true);
+  };
+
+  const handleCompleteTask = (taskId: string) => {
+    // Mark task as completed in the study plan sessions
+    if (studyPlan) {
+      const today = getTodayDayName();
+      const updatedPlan = { ...studyPlan };
+      const todaySchedule = updatedPlan.schedule.find((day: any) => day.day === today);
+      
+      if (todaySchedule && todaySchedule.sessions) {
+        const sessionIndex = todaySchedule.sessions.findIndex((session: any, index: number) => 
+          `session-${index}` === taskId
+        );
+        
+        if (sessionIndex !== -1) {
+          todaySchedule.sessions[sessionIndex].completed = true;
+          setStudyPlan(updatedPlan);
+          nativeStorage.setItem('study_plan', JSON.stringify(updatedPlan));
+          toast.success("Task completed! Great job! 🎉");
+        }
+      }
+    }
+    setShowTaskDetail(false);
+    setSelectedTask(null);
   };
 
   return (
@@ -485,6 +535,7 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                             size="sm" 
                             className="flex-1"
                             disabled={task.completed}
+                            onClick={() => task.completed ? null : handleStartTask(task)}
                           >
                             {task.completed ? "Completed" : "Start Task"}
                           </Button>
@@ -715,6 +766,129 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
           onClose={() => setShowStudyPlanCreator(false)}
           onPlanCreated={handlePlanCreated}
         />
+      )}
+
+      {/* Task Detail Modal */}
+      {showTaskDetail && selectedTask && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <Card className="w-full max-w-md bg-background border-outline max-h-[90vh] overflow-y-auto">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`p-2 rounded-lg ${
+                    selectedTask.category === 'grammar' ? 'bg-green-500/10 text-green-500' :
+                    selectedTask.category === 'vocabulary' ? 'bg-blue-500/10 text-blue-500' :
+                    selectedTask.category === 'reading' ? 'bg-purple-500/10 text-purple-500' :
+                    selectedTask.category === 'listening' ? 'bg-orange-500/10 text-orange-500' :
+                    'bg-primary/10 text-primary'
+                  }`}>
+                    {selectedTask.category === 'grammar' && <PenTool size={16} />}
+                    {selectedTask.category === 'vocabulary' && <BookOpen size={16} />}
+                    {selectedTask.category === 'reading' && <Brain size={16} />}
+                    {selectedTask.category === 'listening' && <Headphones size={16} />}
+                    {!['grammar', 'vocabulary', 'reading', 'listening'].includes(selectedTask.category) && <Target size={16} />}
+                  </div>
+                  <div>
+                    <CardTitle className="text-base text-on-surface">{selectedTask.title}</CardTitle>
+                    <p className="text-xs text-on-surface-variant">{selectedTask.source}</p>
+                  </div>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowTaskDetail(false)}
+                  className="h-8 w-8 p-0"
+                >
+                  ✕
+                </Button>
+              </div>
+            </CardHeader>
+            
+            <CardContent className="space-y-4">
+              {/* Task Info */}
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-on-surface-variant" />
+                  <span className="text-on-surface-variant">{selectedTask.timeEstimate}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Trophy className="w-3 h-3 text-warning" />
+                  <span className="text-on-surface-variant">{selectedTask.points} XP</span>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  {selectedTask.difficulty}
+                </Badge>
+              </div>
+
+              {/* Task Description */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-on-surface">What you'll do:</h4>
+                <p className="text-sm text-on-surface-variant leading-relaxed">
+                  {selectedTask.description}
+                </p>
+              </div>
+
+              {/* Study Tips */}
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-on-surface">Study Tips:</h4>
+                <div className="space-y-1 text-xs text-on-surface-variant">
+                  {selectedTask.category === 'grammar' && (
+                    <>
+                      <div>• Read the theory and examples carefully</div>
+                      <div>• Practice with the exercises provided</div>
+                      <div>• Take notes on key rules and exceptions</div>
+                    </>
+                  )}
+                  {selectedTask.category === 'vocabulary' && (
+                    <>
+                      <div>• Use new words in example sentences</div>
+                      <div>• Focus on word families and collocations</div>
+                      <div>• Practice pronunciation of new words</div>
+                    </>
+                  )}
+                  {selectedTask.category === 'reading' && (
+                    <>
+                      <div>• Skim first, then read carefully</div>
+                      <div>• Identify main ideas and supporting details</div>
+                      <div>• Take notes on key vocabulary</div>
+                    </>
+                  )}
+                  {selectedTask.category === 'listening' && (
+                    <>
+                      <div>• Listen once for general understanding</div>
+                      <div>• Listen again taking detailed notes</div>
+                      <div>• Focus on key information and transitions</div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Progress Tracking */}
+              <div className="space-y-3 pt-2 border-t border-outline-variant">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-on-surface">Ready to complete this task?</span>
+                  <span className="text-xs text-on-surface-variant">+{selectedTask.points} XP</span>
+                </div>
+                
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={() => setShowTaskDetail(false)}
+                  >
+                    Study Later
+                  </Button>
+                  <Button 
+                    className="flex-1"
+                    onClick={() => handleCompleteTask(selectedTask.id)}
+                  >
+                    Mark Complete
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );
