@@ -511,12 +511,12 @@ export function Tasks({ initialTab = "daily" }: TasksProps) {
                     <div className="space-y-2 text-xs text-plan-container-foreground/70">
                       {studyPlan.schedule?.map((day: any, index: number) => (
                         <div key={index} className="p-2 bg-surface-variant/20 rounded">
-                          <strong>{day.day}:</strong> {day.activities.join(', ')}
+                          <strong>{day.day}:</strong> {day.sessions?.map((session: any) => session.title).join(', ') || 'No sessions'}
                         </div>
                       ))}
                       <div className="mt-3 p-3 bg-primary/10 rounded-lg">
                         <p className="text-xs text-plan-container-foreground/80">
-                          <strong>Recommended Book:</strong> {studyPlan.recommendedBook}
+                          <strong>Recommended Book:</strong> {studyPlan.recommendedBook?.title || studyPlan.recommendedBook}
                         </p>
                       </div>
                     </div>
