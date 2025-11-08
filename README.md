@@ -147,8 +147,6 @@ If you encounter any issues or have questions:
 
 ## 🔮 Roadmap
 
-- [ ] iOS app support
-- [ ] Study group features
 - [ ] Advanced analytics
 - [ ] Integration with learning platforms
 - [ ] Pomodoro timer integration
